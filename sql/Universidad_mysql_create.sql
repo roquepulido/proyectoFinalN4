@@ -57,11 +57,6 @@ CREATE TABLE `grades` (
 	PRIMARY KEY (`id_grade`)
 );
 
-CREATE TABLE `student_class` (
-	`id_student_fk` int NOT NULL,
-	`id_class_fk` int NOT NULL
-);
-
 ALTER TABLE `users` ADD CONSTRAINT `users_fk0` FOREIGN KEY (`id_rol_fk`) REFERENCES `roles`(`id_roles`);
 
 ALTER TABLE `notes` ADD CONSTRAINT `notes_fk0` FOREIGN KEY (`id_student_fk`) REFERENCES `students`(`id_student`);
@@ -79,21 +74,3 @@ ALTER TABLE `teachers` ADD CONSTRAINT `teachers_fk1` FOREIGN KEY (`id_class`) RE
 ALTER TABLE `grades` ADD CONSTRAINT `grades_fk0` FOREIGN KEY (`id_class_fk`) REFERENCES `class`(`id_class`);
 
 ALTER TABLE `grades` ADD CONSTRAINT `grades_fk1` FOREIGN KEY (`id_student_fk`) REFERENCES `students`(`id_student`);
-
-ALTER TABLE `students_teachers` ADD CONSTRAINT `students_teachers_fk0` FOREIGN KEY (`id_student_fk`) REFERENCES `students`(`id_student`);
-
-ALTER TABLE `students_teachers` ADD CONSTRAINT `students_teachers_fk1` FOREIGN KEY (`id_teacher_fk`) REFERENCES `teachers`(`id_teacher`);
-
-ALTER TABLE `student_class` ADD CONSTRAINT `student_class_fk0` FOREIGN KEY (`id_student_fk`) REFERENCES `students`(`id_student`);
-
-ALTER TABLE `student_class` ADD CONSTRAINT `student_class_fk1` FOREIGN KEY (`id_class_fk`) REFERENCES `class`(`id_class`);
-
-
-
-
-
-
-
-
-
-

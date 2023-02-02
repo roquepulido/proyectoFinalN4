@@ -1,13 +1,11 @@
-TRUNCATE TABLE users;
-TRUNCATE TABLE roles;
-TRUNCATE TABLE class;
-TRUNCATE TABLE notes;
-TRUNCATE TABLE students;
-TRUNCATE TABLE teachers;
-TRUNCATE TABLE grades;
-TRUNCATE TABLE student_class;
+-- INSERT ROL VALUES 
 
--- INSERT USER VALUES-----
+insert into roles (id_roles,name_rol) values (1,'ADMIN');
+insert into roles (id_roles,name_rol) values (2,'Maestro');
+insert into roles (id_roles,name_rol) values (3,'Alumno');
+
+-- INSERT USER VALUES
+
 insert into users (id_user, pass, id_rol_fk, email) values (1, 'P3ege6crJ', 1, 'ocrocroft0@dailymail.co.uk');
 insert into users (id_user, pass, id_rol_fk, email) values (2, '3BZbEjtY', 2, 'lruthen1@sitemeter.com');
 insert into users (id_user, pass, id_rol_fk, email) values (3, 'tKXLiZlkHH', 2, 'ipundy2@virginia.edu');
@@ -59,11 +57,9 @@ insert into users (id_user, pass, id_rol_fk, email) values (48, 'S1uRBZ', 3, 'ds
 insert into users (id_user, pass, id_rol_fk, email) values (49, 'cJedCJ1', 3, 'hflew1c@blog.com');
 insert into users (id_user, pass, id_rol_fk, email) values (50, 'ucIpbN2Fkm', 3, 'erummin1d@rakuten.co.jp');
 
---- INSERT ROL VALUES ---
-insert into roles (id_roles,name_rol) values (1,'ADMIN');
-insert into roles (id_roles,name_rol) values (2,'Maestro');
-insert into roles (id_roles,name_rol) values (3,'Alumno');
---- INSERT CLASS VALUES ---
+
+-- INSERT CLASS VALUES 
+
 insert into class (name_class) values ('Astronomía');
 insert into class (name_class) values ('Biología');
 insert into class (name_class) values ('Biomedicina');
@@ -71,9 +67,11 @@ insert into class (name_class) values ('Ciencia de materiales');
 insert into class (name_class) values ('Ciencias Ambientales');
 insert into class (name_class) values ('Ciencias básicas');
 insert into class (name_class) values ('Ciencias de la Tierra');
---- INSERT NOTES VALUES ---
+-- INSERT NOTES VALUES 
 
---- INSERT STUDENTS VALUES ---
+
+-- INSERT STUDENTS VALUES 
+
 insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (1, 9, 'Bryon', 'McGookin', '55 Hovde Drive', '12/2/2003', '7422671157');
 insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (2, 10, 'Eddi', 'Jursch', '50896 Morning Pass', '10/27/2018', '6598222028');
 insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (3, 11, 'Aurthur', 'Deeth', '2288 Granby Street', '9/23/2009', '5945491241');
@@ -118,7 +116,8 @@ insert into students (id_student, id_user_fk, first_name, last_name, address, bi
 insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (42, 50, 'Dannye', 'Pulley', '10077 Mccormick Road', '8/17/2001', '9998755972');
 
 
---- INSERT TEACHERS VALUES ---
+-- INSERT TEACHERS VALUES
+
 insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class) values (1, 2, 'Kerwin', 'Cuerdall', '70115 Maywood Center', '2/12/1987', 1);
 insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class) values (2, 3, 'Xerxes', 'Trafford', '55259 Sycamore Place', '2/3/1995', 2);
 insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class) values (3, 4, 'Sly', 'Enderle', '5 Longview Place', '9/20/1988', 3);
@@ -127,7 +126,8 @@ insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, bi
 insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class) values (6, 7, 'Nowell', 'Blasoni', '60 Raven Center', '3/28/1992', 6);
 insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class) values (7, 8, 'Loria', 'McAw', '535 Glacier Hill Way', '3/1/1993', 7);
 
---- INSERT GRADES VALUES ---
+-- INSERT GRADES VALUES
+
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (79, 1, 24, 14);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (72, 4, 23, 36);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (32, 7, 40, 98);
@@ -135,7 +135,7 @@ insert into grades (id_grade, id_class_fk, id_student_fk, value) values (19, 4, 
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (25, 3, 20, 59);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (40, 2, 2, 16);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (97, 5, 6, 65);
-insert into grades (id_grade, id_class_fk, id_student_fk, value) values (51, 8, 9, 100);
+
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (39, 4, 33, 75);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (13, 2, 19, 1);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (3, 2, 7, 4);
@@ -151,83 +151,27 @@ insert into grades (id_grade, id_class_fk, id_student_fk, value) values (44, 4, 
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (2, 5, 33, 49);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (79, 6, 4, 40);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (54, 4, 23, 100);
-insert into grades (id_grade, id_class_fk, id_student_fk, value) values (97, 2, 9, 34);
+
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (16, 3, 28, 96);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (59, 4, 33, 27);
-insert into grades (id_grade, id_class_fk, id_student_fk, value) values (79, 2, 36, 75);
+
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (43, 1, 20, 27);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (46, 4, 15, 12);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (33, 6, 21, 59);
-insert into grades (id_grade, id_class_fk, id_student_fk, value) values (33, 6, 28, 81);
-insert into grades (id_grade, id_class_fk, id_student_fk, value) values (15, 8, 12, 64);
+
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (10, 6, 24, 85);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (56, 2, 12, 37);
-insert into grades (id_grade, id_class_fk, id_student_fk, value) values (100, 8, 8, 21);
+
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (9, 4, 18, 8);
-insert into grades (id_grade, id_class_fk, id_student_fk, value) values (82, 4, 19, 83);
-insert into grades (id_grade, id_class_fk, id_student_fk, value) values (97, 3, 16, 56);
+
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (94, 2, 33, 63);
-insert into grades (id_grade, id_class_fk, id_student_fk, value) values (9, 7, 41, 69);
-insert into grades (id_grade, id_class_fk, id_student_fk, value) values (40, 3, 18, 22);
-insert into grades (id_grade, id_class_fk, id_student_fk, value) values (56, 5, 16, 16);
+
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (42, 2, 39, 44);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (67, 7, 12, 59);
-insert into grades (id_grade, id_class_fk, id_student_fk, value) values (13, 8, 10, 46);
+
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (71, 1, 23, 40);
-insert into grades (id_grade, id_class_fk, id_student_fk, value) values (82, 2, 6, 34);
+
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (57, 5, 17, 9);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (80, 1, 2, 78);
 insert into grades (id_grade, id_class_fk, id_student_fk, value) values (66, 3, 15, 75);
 
---- INSERT STUDENT-CLASS VALUES ---
-
-insert into student_class (id_student_fk, id_class_fk) values (7, 6);
-insert into student_class (id_student_fk, id_class_fk) values (30, 4);
-insert into student_class (id_student_fk, id_class_fk) values (30, 1);
-insert into student_class (id_student_fk, id_class_fk) values (39, 2);
-insert into student_class (id_student_fk, id_class_fk) values (11, 1);
-insert into student_class (id_student_fk, id_class_fk) values (40, 5);
-insert into student_class (id_student_fk, id_class_fk) values (27, 7);
-insert into student_class (id_student_fk, id_class_fk) values (11, 6);
-insert into student_class (id_student_fk, id_class_fk) values (40, 7);
-insert into student_class (id_student_fk, id_class_fk) values (16, 3);
-insert into student_class (id_student_fk, id_class_fk) values (4, 5);
-insert into student_class (id_student_fk, id_class_fk) values (29, 6);
-insert into student_class (id_student_fk, id_class_fk) values (22, 7);
-insert into student_class (id_student_fk, id_class_fk) values (26, 6);
-insert into student_class (id_student_fk, id_class_fk) values (7, 5);
-insert into student_class (id_student_fk, id_class_fk) values (39, 2);
-insert into student_class (id_student_fk, id_class_fk) values (18, 7);
-insert into student_class (id_student_fk, id_class_fk) values (38, 6);
-insert into student_class (id_student_fk, id_class_fk) values (28, 4);
-insert into student_class (id_student_fk, id_class_fk) values (20, 1);
-insert into student_class (id_student_fk, id_class_fk) values (37, 2);
-insert into student_class (id_student_fk, id_class_fk) values (31, 3);
-insert into student_class (id_student_fk, id_class_fk) values (15, 1);
-insert into student_class (id_student_fk, id_class_fk) values (7, 2);
-insert into student_class (id_student_fk, id_class_fk) values (21, 2);
-insert into student_class (id_student_fk, id_class_fk) values (32, 3);
-insert into student_class (id_student_fk, id_class_fk) values (18, 4);
-insert into student_class (id_student_fk, id_class_fk) values (8, 4);
-insert into student_class (id_student_fk, id_class_fk) values (1, 4);
-insert into student_class (id_student_fk, id_class_fk) values (30, 2);
-insert into student_class (id_student_fk, id_class_fk) values (5, 5);
-insert into student_class (id_student_fk, id_class_fk) values (29, 5);
-insert into student_class (id_student_fk, id_class_fk) values (32, 4);
-insert into student_class (id_student_fk, id_class_fk) values (21, 3);
-insert into student_class (id_student_fk, id_class_fk) values (39, 7);
-insert into student_class (id_student_fk, id_class_fk) values (7, 6);
-insert into student_class (id_student_fk, id_class_fk) values (32, 4);
-insert into student_class (id_student_fk, id_class_fk) values (6, 6);
-insert into student_class (id_student_fk, id_class_fk) values (37, 4);
-insert into student_class (id_student_fk, id_class_fk) values (31, 3);
-insert into student_class (id_student_fk, id_class_fk) values (13, 2);
-insert into student_class (id_student_fk, id_class_fk) values (17, 7);
-insert into student_class (id_student_fk, id_class_fk) values (10, 6);
-insert into student_class (id_student_fk, id_class_fk) values (1, 5);
-insert into student_class (id_student_fk, id_class_fk) values (3, 7);
-insert into student_class (id_student_fk, id_class_fk) values (36, 1);
-insert into student_class (id_student_fk, id_class_fk) values (15, 6);
-insert into student_class (id_student_fk, id_class_fk) values (14, 6);
-insert into student_class (id_student_fk, id_class_fk) values (28, 2);
-insert into student_class (id_student_fk, id_class_fk) values (16, 6);
