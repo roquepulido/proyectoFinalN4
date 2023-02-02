@@ -1,4 +1,24 @@
-<?php
+<?php session_start();
+if (isset($_SESSION["rol"])) {
+    header("Location:./dashboard.php");
+}
+
+if (!empty($_POST)) {
+    include "../controllers/dbconn.php";
+    $email = $_POST["email"];
+    $pass = $_POST["pass"];
+    $query = "SELECT id_user, pass, id_rol_fk FROM users WHERE email = '$email'";
+    $dataSQL = mysqli_query($db, $query) or die(mysqli_error($db));
+    if ($dataSQL->num_rows > 0) {
+        $user = $dataSQL->fetch_assoc();
+        if (password_verify($pass, $user['pass'])) {
+            $_SESSION["rol"] = $user["id_rol_fk"];
+            $_SESSION["id_user"] = $user["id_user"];
+            header("Location:./dashboard.php");
+        }
+    }
+    $error = "Los datos no estan correctos, trata de nuevo.";
+}
 
 
 ?>
@@ -31,6 +51,12 @@
         <div class="card">
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Bienvenido Ingresa con tu cuenta</p>
+                <?php if (isset($error)) { ?>
+                <h4 class="d-flex flex-column text-center"><i
+                        class="fas fa-exclamation-triangle text-danger"></i><?= $error ?></h4>
+
+
+                <?php } ?>
 
                 <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
                     <div class="input-group mb-3">

@@ -2,6 +2,7 @@ CREATE TABLE `users` (
 	`id_user` int NOT NULL AUTO_INCREMENT,
 	`email` varchar(50) NOT NULL UNIQUE,
 	`pass` varchar(100) NOT NULL,
+	`pass_org` varchar(100),
 	`id_rol_fk` int NOT NULL,
 	PRIMARY KEY (`id_user`)
 );
