@@ -4,24 +4,46 @@ if (!isset($_SESSION["rol"])) {
     header("Refresh:2; url=./login.php");
     include "./403.php";
 }
-include "./templates/header.php";
+if ($_SESSION["rol"] != 1) {
+    header("Refresh:2; url=./login.php");
+    include "./403.php";
+}
+include "../controllers/dbconn.php";
+
+$query = "SELECT * FROM teachers AS t INNER JOIN class AS c ON t.id_class_fk = c.id_class";
+
+$dataSQL = mysqli_query($db, $query) or die(mysqli_error($db));
+$teachers = $dataSQL->fetch_all(MYSQLI_ASSOC);
+
+
+include "./templates/header_start.php";
+include "./templates/header_links.php";
+?>
+
+<!-- DataTables -->
+<link rel="stylesheet" href="../assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="../assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="../assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+<?php
+include "./templates/header_end.php";
 include "./templates/navbar.php";
 include "./templates/aside.php";
 
 ?>
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+<div class="content-wrapper" style="max-height: 80vh;">
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Maestros ADMIN</h1>
+                    <h1 class="m-0">Lista de Maestros</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Starter Page</li>
+                        <li class="breadcrumb-item active">Maestros</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -30,71 +52,71 @@ include "./templates/aside.php";
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <div class="content">
+    <section class="content">
         <div class="container-fluid">
-            <?php var_dump($_SERVER) ?>
             <div class="row">
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-
-                            <p class="card-text">
-                                Some quick example text to build on the card title and make up the bulk of the card's
-                                content.
-                            </p>
-
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a>
-                        </div>
-                    </div>
-
-                    <div class="card card-primary card-outline">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-
-                            <p class="card-text">
-                                Some quick example text to build on the card title and make up the bulk of the card's
-                                content.
-                            </p>
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a>
-                        </div>
-                    </div><!-- /.card -->
-                </div>
-                <!-- /.col-md-6 -->
-                <div class="col-lg-6">
+                <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="m-0">Featured</h5>
+                            <h3 class="card-title">Información de Maestros</h3>
                         </div>
+                        <!-- /.card-header -->
                         <div class="card-body">
-                            <h6 class="card-title">Special title treatment</h6>
+                            <table id="tablaMaestro" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nompre</th>
+                                        <th>Apellido</th>
+                                        <th>Dirección</th>
+                                        <th>Fecha de nacimiento</th>
+                                        <th>Clase asignada</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $x = 1;
+                                    foreach ($teachers as $teacher) {
 
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.
-                            </p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                                    ?>
+                                    <tr>
+                                        <td><?= $x ?></td>
+                                        <td><?= $teacher["first_name"] ?></td>
+                                        <td><?= $teacher["last_name"] ?></td>
+                                        <td><?= $teacher["address"] ?></td>
+                                        <td><?= $teacher["birth_date"] ?></td>
+                                        <td><?= $teacher["name_class"] ?></td>
+                                        <td></td>
+                                    </tr>
+                                    <?php
+                                        $x++;
+                                    }
+                                    ?>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nompre</th>
+                                        <th>Apellido</th>
+                                        <th>Dirección</th>
+                                        <th>Fecha de nacimiento</th>
+                                        <th>Clase asignada</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
+                        <!-- /.card-body -->
                     </div>
-
-                    <div class="card card-primary card-outline">
-                        <div class="card-header">
-                            <h5 class="m-0">Featured</h5>
-                        </div>
-                        <div class="card-body">
-                            <h6 class="card-title">Special title treatment</h6>
-
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.
-                            </p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
+                    <!-- /.card -->
                 </div>
-                <!-- /.col-md-6 -->
+                <!-- /.col -->
             </div>
             <!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
@@ -110,4 +132,28 @@ include "./templates/aside.php";
 <!-- /.control-sidebar -->
 <?php
 include "./templates/footer.php";
+?>
+<!-- DataTables  & Plugins -->
+<script src="../assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="../assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="../assets/plugins/jszip/jszip.min.js"></script>
+<script src="../assets/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="../assets/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="../assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="../assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="../assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<script>
+$("#tablaMaestro").DataTable({
+    "responsive": true,
+    "lengthChange": false,
+    "autoWidth": false,
+    "buttons": ["copy", "excel", "pdf", "colvis"]
+}).buttons().container().appendTo('#tablaMaestro_wrapper .col-md-6:eq(0)');
+</script>
+<?php
+include "./templates/scripts_html_end.php";
 ?>

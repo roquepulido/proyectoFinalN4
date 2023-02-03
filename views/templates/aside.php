@@ -58,7 +58,7 @@
 
                 <li class="nav-header text-center text-uppercase"> menu Maestros</li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="./alumnos_maestro.php" class="nav-link ">
                         <i class="bi bi-mortarboard-fill nav-icon"></i>
                         <p class="ml-2">Alumnos</p>
                     </a>
@@ -68,7 +68,7 @@
                 ?>
                 <li class="nav-header text-center text-uppercase">menu Alumnos</li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="./calificaciones.php" class="nav-link">
                         <i class="bi bi-file-earmark-check nav-icon"></i>
                         <p class="ml-2">Calificaciones</p>
                     </a>

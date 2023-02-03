@@ -4,7 +4,9 @@ if (!isset($_SESSION["rol"])) {
     header("Refresh:2; url=./login.php");
     include "./403.php";
 }
-include "./templates/header.php";
+include "./templates/header_start.php";
+include "./templates/header_links.php";
+include "./templates/header_end.php";
 include "./templates/navbar.php";
 include "./templates/aside.php";
 
@@ -109,4 +111,5 @@ include "./templates/aside.php";
 <!-- /.control-sidebar -->
 <?php
 include "./templates/footer.php";
+include "./templates/scripts_html_end.php";
 ?>
