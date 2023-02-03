@@ -16,7 +16,7 @@ include "./templates/aside.php";
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Starter Page</h1>
+                    <h1 class="m-0">Maestros ADMIN</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -32,6 +32,7 @@ include "./templates/aside.php";
     <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
+            <?php var_dump($_SERVER) ?>
             <div class="row">
                 <div class="col-lg-6">
                     <div class="card">

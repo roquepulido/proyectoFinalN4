@@ -118,13 +118,13 @@ insert into students (id_student, id_user_fk, first_name, last_name, address, bi
 
 -- INSERT TEACHERS VALUES
 
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class) values (1, 2, 'Kerwin', 'Cuerdall', '70115 Maywood Center', '2/12/1987', 1);
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class) values (2, 3, 'Xerxes', 'Trafford', '55259 Sycamore Place', '2/3/1995', 2);
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class) values (3, 4, 'Sly', 'Enderle', '5 Longview Place', '9/20/1988', 3);
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class) values (4, 5, 'Cy', 'Champness', '98248 Esch Court', '2/7/1987', 4);
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class) values (5, 6, 'Conroy', 'Ricoald', '5516 Bartelt Trail', '2/18/1991', 5);
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class) values (6, 7, 'Nowell', 'Blasoni', '60 Raven Center', '3/28/1992', 6);
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class) values (7, 8, 'Loria', 'McAw', '535 Glacier Hill Way', '3/1/1993', 7);
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class_fk) values (1, 2, 'Kerwin', 'Cuerdall', '70115 Maywood Center', '2/12/1987', 1);
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class_fk) values (2, 3, 'Xerxes', 'Trafford', '55259 Sycamore Place', '2/3/1995', 2);
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class_fk) values (3, 4, 'Sly', 'Enderle', '5 Longview Place', '9/20/1988', 3);
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class_fk) values (4, 5, 'Cy', 'Champness', '98248 Esch Court', '2/7/1987', 4);
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class_fk) values (5, 6, 'Conroy', 'Ricoald', '5516 Bartelt Trail', '2/18/1991', 5);
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class_fk) values (6, 7, 'Nowell', 'Blasoni', '60 Raven Center', '3/28/1992', 6);
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date, id_class_fk) values (7, 8, 'Loria', 'McAw', '535 Glacier Hill Way', '3/1/1993', 7);
 
 -- INSERT GRADES VALUES
 
