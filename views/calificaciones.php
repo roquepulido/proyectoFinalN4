@@ -1,12 +1,7 @@
 <?php session_start();
 
-if (!isset($_SESSION["rol"])) {
-    header("Refresh:2; url=./login.php");
-    include "./403.php";
-}
-if ($_SESSION["rol"] != 3) {
-    header("Refresh:2; url=./login.php");
-    include "./403.php";
+if (!isset($_SESSION["rol"]) or $_SESSION["rol"] != 3) {
+    header("Location:./403.php");
 }
 include "./templates/header.php";
 include "./templates/navbar.php";

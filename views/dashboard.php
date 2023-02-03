@@ -1,8 +1,7 @@
 <?php session_start();
 
 if (!isset($_SESSION["rol"])) {
-    header("Refresh:2; url=./login.php");
-    include "./403.php";
+    header("Location:./403.php");
 }
 include "./templates/header_start.php";
 include "./templates/header_links.php";

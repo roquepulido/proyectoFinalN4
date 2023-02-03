@@ -39,15 +39,15 @@
 
                 <li class="nav-header text-center text-uppercase"> menu Administración</li>
                 <li class="nav-item">
-                    <a href="./maestros_admin.php"
-                        class="nav-link <?= $_SERVER['PHP_SELF'] == '/proyectoFinalN4/views/maestros_admin.php' ? "active" : "" ?>">
+                    <a href="./admin_maestros.php"
+                        class="nav-link <?= $_SERVER['PHP_SELF'] == '/proyectoFinalN4/views/admin_maestros.php' ? "active" : "" ?>">
                         <i class="bi bi-person-workspace nav-icon"></i>
                         <p class="ml-2">Maestros</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./alumnos_admin.php"
-                        class="nav-link <?= $_SERVER['PHP_SELF'] == '/proyectoFinalN4/views/alumnos_admin.php' ? "active" : "" ?>">
+                    <a href="./admin_alumnos.php"
+                        class="nav-link <?= $_SERVER['PHP_SELF'] == '/proyectoFinalN4/views/admin_alumnos.php' ? "active" : "" ?>">
                         <i class="bi bi-mortarboard-fill nav-icon"></i>
                         <p class="ml-2">Alumnos</p>
                     </a>
@@ -58,7 +58,7 @@
 
                 <li class="nav-header text-center text-uppercase"> menu Maestros</li>
                 <li class="nav-item">
-                    <a href="./alumnos_maestro.php" class="nav-link ">
+                    <a href="./maestro_alumnos.php" class="nav-link ">
                         <i class="bi bi-mortarboard-fill nav-icon"></i>
                         <p class="ml-2">Alumnos</p>
                     </a>

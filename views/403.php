@@ -44,7 +44,13 @@
             </div>
         </div>
     </div>
-
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            window.location.href = "./login.php";
+        }, 2000);
+    }, false);
+    </script>
 </body>
 
 </html>

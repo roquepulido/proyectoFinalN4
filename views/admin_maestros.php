@@ -1,19 +1,15 @@
 <?php session_start();
 
-if (!isset($_SESSION["rol"])) {
-    header("Refresh:2; url=./login.php");
-    include "./403.php";
+if (!isset($_SESSION["rol"]) or $_SESSION["rol"] != 1) {
+    header("Location:./403.php");
 }
-if ($_SESSION["rol"] != 1) {
-    header("Refresh:2; url=./login.php");
-    include "./403.php";
-}
+
 include "../controllers/dbconn.php";
 
-$query = "SELECT * FROM students";
+$query = "SELECT * FROM teachers AS t INNER JOIN class AS c ON t.id_class_fk = c.id_class";
 
 $dataSQL = mysqli_query($db, $query) or die(mysqli_error($db));
-$students = $dataSQL->fetch_all(MYSQLI_ASSOC);
+$teachers = $dataSQL->fetch_all(MYSQLI_ASSOC);
 
 
 include "./templates/header_start.php";
@@ -38,12 +34,12 @@ include "./templates/aside.php";
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Lista de Alumnos</h1>
+                    <h1 class="m-0">Lista de Maestros</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Alumnos</li>
+                        <li class="breadcrumb-item active">Maestros</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -58,11 +54,11 @@ include "./templates/aside.php";
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Información de Alumnos</h3>
+                            <h3 class="card-title">Información de Maestros</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="tablaAlumnos" class="table table-bordered table-striped">
+                            <table id="tablaMaestro" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -77,34 +73,26 @@ include "./templates/aside.php";
                                 <tbody>
                                     <?php
                                     $x = 1;
-                                    foreach ($students as $student) {
+                                    foreach ($teachers as $teacher) {
 
                                     ?>
                                     <tr>
                                         <td><?= $x ?></td>
-                                        <td><?= $student["first_name"] ?></td>
-                                        <td><?= $student["last_name"] ?></td>
-                                        <td><?= $student["address"] ?></td>
-                                        <td><?= $student["birth_date"] ?></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td><?= $teacher["first_name"] ?></td>
+                                        <td><?= $teacher["last_name"] ?></td>
+                                        <td><?= $teacher["address"] ?></td>
+                                        <td><?= $teacher["birth_date"] ?></td>
+                                        <td><?= $teacher["name_class"] ?></td>
+                                        <td class="text-center">
+                                            <a href="#" class="text-info mx-2"><i class="bi bi-pencil-square"></i></a>
+                                            <a href="#" class="text-danger mx-2"><i class="bi bi-trash3-fill"></i></a>
+                                        </td>
                                     </tr>
                                     <?php
                                         $x++;
                                     }
                                     ?>
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Nompre</th>
-                                        <th>Apellido</th>
-                                        <th>Dirección</th>
-                                        <th>Fecha de nacimiento</th>
-                                        <th>Clase asignada</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
                         <!-- /.card-body -->
@@ -147,12 +135,12 @@ include "./templates/footer.php";
 <script src="../assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="../assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script>
-$("#tablaAlumnos").DataTable({
+$("#tablaMaestro").DataTable({
     "responsive": true,
     "lengthChange": false,
     "autoWidth": false,
     "buttons": ["copy", "excel", "pdf", "colvis"]
-}).buttons().container().appendTo('#tablaAlumnos_wrapper .col-md-6:eq(0)');
+}).buttons().container().appendTo('#tablaMaestro_wrapper .col-md-6:eq(0)');
 </script>
 <?php
 include "./templates/scripts_html_end.php";
