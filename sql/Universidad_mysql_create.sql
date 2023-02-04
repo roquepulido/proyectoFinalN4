@@ -15,7 +15,8 @@ CREATE TABLE `roles` (
 
 CREATE TABLE `class` (
 	`id_class` int NOT NULL AUTO_INCREMENT,
-	`name_class` varchar(50) NOT NULL,
+	`name_class` varchar(50) NOT NULL,	
+	`id_teacher_fk` int ,
 	PRIMARY KEY (`id_class`)
 );
 
@@ -67,6 +68,8 @@ ALTER TABLE `notes` ADD CONSTRAINT `notes_fk1` FOREIGN KEY (`id_teacher_fk`) REF
 ALTER TABLE `notes` ADD CONSTRAINT `notes_fk2` FOREIGN KEY (`id_class_fk`) REFERENCES `class`(`id_class`);
 
 ALTER TABLE `students` ADD CONSTRAINT `students_fk0` FOREIGN KEY (`id_user_fk`) REFERENCES `users`(`id_user`);
+
+ALTER TABLE `class` ADD CONSTRAINT `class_fk0` FOREIGN KEY (`id_teacher_fk`) REFERENCES `users`(`id_teacher`);
 
 ALTER TABLE `teachers` ADD CONSTRAINT `teachers_fk0` FOREIGN KEY (`id_user_fk`) REFERENCES `users`(`id_user`);
 

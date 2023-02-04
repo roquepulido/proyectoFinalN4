@@ -52,6 +52,13 @@
                         <p class="ml-2">Alumnos</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="./admin_clases.php"
+                        class="nav-link <?= $_SERVER['PHP_SELF'] == '/proyectoFinalN4/views/admin_clases.php' ? "active" : "" ?>">
+                        <i class="bi bi-easel2 nav-icon"></i>
+                        <p class="ml-2">Clases</p>
+                    </a>
+                </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 2) {
                 ?>

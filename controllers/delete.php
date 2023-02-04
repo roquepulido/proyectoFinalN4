@@ -35,7 +35,7 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
         $dataSQL = mysqli_query($db, $query) or die(mysqli_error($db));
         if ($dataSQL) {
             $ans["status"] = "ok";
-            $ans["answer"] = "Se elimino con exito el registro $id de la tabla de $table";
+            $ans["answer"] = "Se elimino con exito el registro de la tabla de $table";
         } else {
             $ans["status"] = "error";
             $ans["answer"] = "Fallo en eliminar trata de nuevo";

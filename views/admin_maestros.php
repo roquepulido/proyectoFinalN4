@@ -6,7 +6,7 @@ if (!isset($_SESSION["rol"]) or $_SESSION["rol"] != 1) {
 
 include "../controllers/dbconn.php";
 
-$query = "SELECT * FROM teachers AS t INNER JOIN class AS c ON t.id_class_fk = c.id_class";
+$query = "SELECT * FROM teachers AS t INNER JOIN class AS c ON t.id_class_fk = c.id_class INNER JOIN users as u ON t.id_user_fk = u.id_user";
 
 $dataSQL = mysqli_query($db, $query) or die(mysqli_error($db));
 $teachers = $dataSQL->fetch_all(MYSQLI_ASSOC);
@@ -62,6 +62,7 @@ include "./templates/aside.php";
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Email</th>
                                         <th>Nompre</th>
                                         <th>Apellido</th>
                                         <th>Dirección</th>
@@ -78,6 +79,7 @@ include "./templates/aside.php";
                                     ?>
                                     <tr>
                                         <td><?= $x ?></td>
+                                        <td><?= $teacher["email"] ?></td>
                                         <td><?= $teacher["first_name"] ?></td>
                                         <td><?= $teacher["last_name"] ?></td>
                                         <td><?= $teacher["address"] ?></td>
@@ -85,7 +87,9 @@ include "./templates/aside.php";
                                         <td><?= $teacher["name_class"] ?></td>
                                         <td class="text-center">
                                             <a href="#" class="text-info mx-2"><i class="bi bi-pencil-square"></i></a>
-                                            <a href="#" class="text-danger mx-2"><i class="bi bi-trash3-fill"></i></a>
+                                            <a href="#" class="text-danger mx-2"
+                                                onclick='delete(<?= $teacher["id_teacher"] ?>)'><i
+                                                    class="bi bi-trash3-fill"></i></a>
                                         </td>
                                     </tr>
                                     <?php
