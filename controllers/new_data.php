@@ -1,9 +1,5 @@
 <?php session_start();
-/*
-'name_class' => string 'Ciencias de la 4234' (length=19)
-  'id_teacher' => string '3' (length=1)
-  'tabla' => string 'clases' (length=6)
-  */
+include "./helpers.php";
 
 if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
     include "./dbconn.php";
@@ -13,15 +9,14 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
         case "maestros":
             $query = "DELETE FROM teachers WHERE id_teacher = '$id'"; //pendiente
             break;
-        case "estudiantes":
-            $query = "DELETE FROM students WHERE id_student = '$id'"; //pendiente
+        case "alumnos":
+            $res = new_alumno($data, $db);
             break;
         case "usuarios":
             $query = "DELETE FROM users WHERE id_user = '$id'"; //pendiente
             break;
         case "clases":
-            $data["id_teacher"] == "Selecciona maestro" ? $id_teacher_fk = 'NULL' : $id_teacher_fk = "'{$data["id_teacher"]}'";
-            $query = "INSERT INTO class(name_class, id_teacher_fk) values ('{$data["name_class"]}',{$id_teacher_fk})";
+            $res = new_class($data, $db);
             break;
         case "calif":
             $query = "DELETE FROM grades WHERE id_grade = '$id'"; //pendiente
@@ -37,19 +32,52 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
             $ans["answer"] = "No tienes permiso";
             break;
     }
-    if (isset($query)) {
-        $dataSQL = mysqli_query($db, $query) or die(mysqli_error($db));
-        if ($dataSQL) {
-            $ans["status"] = "ok";
-            $ans["answer"] = "Se creao el nuevo registro en la tabla de $table";
-        } else {
-            $ans["status"] = "error";
-            $ans["answer"] = "Fallo en actualizar trata de nuevo";
-        }
-    }
 } else {
-    $ans["status"] = "error";
-    $ans["answer"] = "No tienes permiso";
+    $res["status"] = "error";
+    $res["answer"] = "No tienes permiso";
 }
 
-echo json_encode($ans);
+echo json_encode($res);
+
+
+function new_class($data, $db)
+{
+    $data["id_teacher"] == "Selecciona maestro" ? $id_teacher_fk = 'NULL' : $id_teacher_fk = "'{$data["id_teacher"]}'";
+    $query = "INSERT INTO class(name_class, id_teacher_fk) values ('{$data["name_class"]}',{$id_teacher_fk})";
+    $db->query($query);
+    $id_class = $db->insert_id;
+
+    if ($id_class != 0) {
+        $ans["status"] = "ok";
+        $ans["answer"] = "registro creado";
+    } else {
+        $ans["status"] = "error";
+        $ans["answer"] = "Fallo en crear trata de nuevo";
+    }
+    return $ans;
+}
+
+
+function new_alumno($data, $db)
+{
+    $alumno = $data["data"];
+    $pass = random_str(8);
+    $pass_hash = password_hash($pass, PASSWORD_DEFAULT);
+    $rol = 3;
+    $query = "INSERT INTO users(email,pass,pass_org,id_rol_fk) VALUES ('{$alumno["email"]}','{$pass_hash}','{$pass}','{$rol}')";
+
+    $db->query($query);
+    $id_user = $db->insert_id;
+    $query = "INSERT INTO students(id_user_fk, DNI,first_name,last_name,address, birth_date) VALUES ($id_user,'{$alumno["dni"]}','{$alumno["first_name"]}','{$alumno["last_name"]}','{$alumno["address"]}','{$alumno["birth_date"]}')";
+    $db->query($query);
+    $id_student = $db->insert_id;
+    if ($id_student != 0) {
+        $ans["status"] = "ok";
+        $ans["answer"] = "registro creado";
+        $ans["answer"]["pass"] = $pass;
+    } else {
+        $ans["status"] = "error";
+        $ans["answer"] = "Fallo en crear trata de nuevo";
+    }
+    return $ans;
+}

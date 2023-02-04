@@ -8,7 +8,7 @@ include "../controllers/dbconn.php";
 
 $query = "SELECT * FROM teachers AS t INNER JOIN class AS c ON t.id_class_fk = c.id_class INNER JOIN users as u ON t.id_user_fk = u.id_user";
 
-$dataSQL = mysqli_query($db, $query) or die(mysqli_error($db));
+$dataSQL = $db->query($query);
 $teachers = $dataSQL->fetch_all(MYSQLI_ASSOC);
 
 

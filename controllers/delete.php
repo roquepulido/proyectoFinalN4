@@ -32,7 +32,7 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
             break;
     }
     if (isset($query)) {
-        $dataSQL = mysqli_query($db, $query) or die(mysqli_error($db));
+        $dataSQL = $db->query($query);
         if ($dataSQL) {
             $ans["status"] = "ok";
             $ans["answer"] = "Se elimino con exito el registro de la tabla de $table";

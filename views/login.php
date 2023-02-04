@@ -8,7 +8,7 @@ if (!empty($_POST)) {
     $email = $_POST["email"];
     $pass = $_POST["pass"];
     $query = "SELECT u.id_user, u.pass, u.id_rol_fk, r.name_rol FROM users as u INNER JOIN roles as r ON u.id_rol_fk = r.id_roles WHERE email = '$email'";
-    $dataSQL = mysqli_query($db, $query) or die(mysqli_error($db));
+    $dataSQL = $db->query($query);
     if ($dataSQL->num_rows > 0) {
         $user = $dataSQL->fetch_assoc();
         if (password_verify($pass, $user['pass'])) {
@@ -22,14 +22,14 @@ if (!empty($_POST)) {
                     break;
                 case 2:
                     $query = "SELECT first_name, last_name , id_class_fk FROM teachers WHERE id_user_fk = '" . $user["id_user"] . "'";
-                    $dataSQL = mysqli_query($db, $query) or die(mysqli_error($db));
+                    $dataSQL = $db->query($query);
                     $_SESSION["user"] = $dataSQL->fetch_assoc();
                     $_SESSION["user"]["name"] = $_SESSION["user"]["first_name"] . " " . $_SESSION["user"]["last_name"];
                     $_SESSION["user"]["rol"] = "Maestro";
                     break;
                 case 3:
                     $query = "SELECT first_name, last_name , id_student FROM students WHERE id_user_fk = '" . $user["id_user"] . "'";
-                    $dataSQL = mysqli_query($db, $query) or die(mysqli_error($db));
+                    $dataSQL = $db->query($query);
                     $_SESSION["user"] = $dataSQL->fetch_assoc();
                     $_SESSION["user"]["name"] = $_SESSION["user"]["first_name"] . " " . $_SESSION["user"]["last_name"];
                     $_SESSION["user"]["rol"] = "Alumno";

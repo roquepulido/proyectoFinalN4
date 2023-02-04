@@ -1,9 +1,9 @@
 <?php session_start();
 
-function count_alumos_class($id, $db)
+function count_alumnos_class($id, $db)
 {
     $query = "SELECT COUNT(id_class_fk) FROM grades WHERE id_class_fk = '$id'";
-    $dataSQL = mysqli_query($db, $query) or die(mysqli_error($db));
+    $dataSQL = $db->query($query);
     $count = $dataSQL->fetch_assoc();
     return $count["COUNT(id_class_fk)"];
 }
@@ -17,7 +17,7 @@ include "../controllers/dbconn.php";
 
 $query = "SELECT c.*, t.first_name, t.last_name FROM class as c LEFT JOIN teachers AS t ON c.id_teacher_fk = t.id_teacher";
 
-$dataSQL = mysqli_query($db, $query) or die(mysqli_error($db));
+$dataSQL = $db->query($query);
 $classes = $dataSQL->fetch_all(MYSQLI_ASSOC);
 
 
@@ -96,7 +96,7 @@ include "./templates/aside.php";
                                     <td><?= !empty($class["id_teacher_fk"]) ? $class["first_name"] . " " . $class["last_name"] : '<span class="badge badge-warning">No esta asignada</span>' ?>
                                     </td>
                                     <td><?php
-                                            $count = count_alumos_class($class["id_class"], $db);
+                                            $count = count_alumnos_class($class["id_class"], $db);
                                             echo $count == 0 ? '<span class="badge badge-warning">Sin alumnos</span>' : "$count"; ?>
                                     </td>
                                     <td class="text-center">

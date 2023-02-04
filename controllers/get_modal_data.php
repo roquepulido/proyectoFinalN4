@@ -9,8 +9,8 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
         case "maestros":
             $query = "SELECT * FROM teachers WHERE id_teacher = '$id'";
             break;
-        case "estudiantes":
-            $query = "SELECT * FROM students WHERE id_student = '$id'";
+        case "alumnos":
+            $ans = alumnos($id, $db);
             break;
         case "usuarios":
             $query = "SELECT * FROM users WHERE id_user = '$id'";
@@ -40,7 +40,7 @@ echo $ans;
 function select_all_teachers($db, $id = 0)
 {
     $query = "SELECT id_teacher, first_name, last_name FROM teachers";
-    $dataSQL = mysqli_query($db, $query) or mysqli_error($db);
+    $dataSQL = $db->query($query);
     $data = $dataSQL->fetch_all(MYSQLI_ASSOC);
     $res = "";
 
@@ -70,7 +70,7 @@ function clases($id, $db)
 {
     if ($id != "0") {
         $query = "SELECT * FROM class WHERE id_class = '$id'";
-        $dataSQL = mysqli_query($db, $query) or die(mysqli_error($db));
+        $dataSQL = $db->query($query);
         $data = $dataSQL->fetch_array(MYSQLI_ASSOC);
 ?>
 <div class="mb-3">
@@ -92,6 +92,55 @@ function clases($id, $db)
     <?= select_all_teachers($db) ?>
 </div>
 
+<?php
+
+    }
+}
+
+function alumnos($id, $db)
+{
+    if ($id != "0") {
+        $query = "SELECT * FROM class WHERE id_class = '$id'";
+        $dataSQL = $db->query($query);
+        $data = $dataSQL->fetch_array(MYSQLI_ASSOC);
+    ?>
+<div class="mb-3">
+    <label for="name_class" class="form-label">Nombre de la Materia</label>
+    <input type="text" class="form-control" id="name_class" value="<?= $data["name_class"] ?>">
+</div>
+<div class="mb-3">
+    <?= select_all_teachers($db, $data["id_teacher_fk"]) ?>
+</div>
+
+<?php
+    } else { ?>
+
+<div class="mb-3">
+    <label for="dni" class="form-label">DNI</label>
+    <input type="text" class="form-control" id="dni" name="dni" placeholder="Ingresa la matricula" required>
+</div>
+<div class="mb-3">
+    <label for="email" class="form-label">Correo Electronico</label>
+    <input type="email" class="form-control" id="email" name="email" placeholder="Ingresa email" required>
+</div>
+<div class="mb-3">
+    <label for="first_name" class="form-label">Nombre(s)</label>
+    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Ingresa nombre(s)" required>
+</div>
+<div class="mb-3">
+    <label for="last_name" class="form-label">Apellido(s)</label>
+    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Ingresa la apellido(s)"
+        required>
+</div>
+<div class="mb-3">
+    <label for="address" class="form-label">Dirección</label>
+    <input type="text" class="form-control" id="address" name="address" placeholder="Ingresa la dirección" required>
+</div>
+<div class="mb-3">
+    <label for="birth_date" class="form-label">Fecha de nacimiento</label>
+    <input type="date" class="form-control" id="birth_date" name="birth_date" placeholder="Ingresa fecha de nacimiento"
+        required>
+</div>
 <?php
 
     }
