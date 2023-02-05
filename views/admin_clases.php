@@ -173,7 +173,7 @@ include "./templates/aside.php";
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="newSubmit">Agreagar</button>
+                <button type="button" class="btn btn-primary" id="newSubmit">Crear</button>
             </div>
         </div>
     </div>

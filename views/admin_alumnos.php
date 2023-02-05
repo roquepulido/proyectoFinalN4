@@ -144,7 +144,7 @@ include "./templates/aside.php";
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electronico</label>
-                        <input type="email" class="form-control" name="email" placeholder="Ingresa email" required>
+                        <input type="email" class="form-control" name="email" placeholder="Ingresa email" disabled>
                     </div>
                     <div class="mb-3">
                         <label for="first_name" class="form-label">Nombre(s)</label>

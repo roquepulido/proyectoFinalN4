@@ -70,6 +70,7 @@ include "./templates/aside.php";
                                     <th>#</th>
                                     <th>Email / Usuario</th>
                                     <th>Permiso</th>
+                                    <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -99,6 +100,8 @@ include "./templates/aside.php";
                                             }
 
                                             ?>
+                                    </td>
+                                    <td><?= $user["active"] == 1 ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-danger">Inactivo</span>' ?>
                                     </td>
                                     <td class="text-center">
                                         <a href="#" class="text-info mx-2" onclick="update(<?= $user['id_user'] ?>)"><i
