@@ -1,5 +1,68 @@
 <?php session_start();
+
 include "./helpers.php";
+
+function new_class($data, $db)
+{
+    $data["id_teacher"] == "Selecciona maestro" ? $id_teacher_fk = 'NULL' : $id_teacher_fk = "'{$data["id_teacher"]}'";
+    $query = "INSERT INTO classes(name_class, id_teacher_fk) values ('{$data["name_class"]}',{$id_teacher_fk})";
+    $db->query($query);
+    $id_class = $db->insert_id;
+
+    if ($id_class != 0) {
+        $ans["status"] = "ok";
+        $ans["answer"] = "registro creado";
+    } else {
+        $ans["status"] = "error";
+        $ans["answer"] = "Fallo en crear trata de nuevo";
+    }
+    return $ans;
+}
+
+
+function new_alumno($data, $db)
+{
+    $alumno = $data["data"];
+    $query = "SELECT COUNT(*) FROM users WHERE email = '{$alumno['email']}'";
+    $count = $db->query($query);
+    $emailrepetido = $count->fetch_assoc();
+    if ($emailrepetido["COUNT(*)"] != 0) {
+        $ans["status"] = "error";
+        $ans["answer"] = "Correo ya registrado";
+        return $ans;
+    }
+
+    $pass = random_str(8);
+    $pass_hash = password_hash($pass, PASSWORD_DEFAULT);
+    $rol = 3;
+    $query = "INSERT INTO users(email,pass,pass_org,id_rol_fk) VALUES ('{$alumno["email"]}','{$pass_hash}','{$pass}','{$rol}')";
+
+
+    if (!$db->query($query)) {
+        $ans["status"] = "error";
+        $ans["answer"] = "Errormessage: $db->error";
+        return $ans;
+    }
+
+    $id_user = $db->insert_id;
+    $query = "INSERT INTO students(id_user_fk, DNI,first_name,last_name,address, birth_date) VALUES ($id_user,'{$alumno["dni"]}','{$alumno["first_name"]}','{$alumno["last_name"]}','{$alumno["address"]}','{$alumno["birth_date"]}')";
+    if (!$db->query($query)) {
+        $ans["status"] = "error";
+        $ans["answer"] = "Errormessage: $db->error";
+        return $ans;
+    }
+
+    $id_student = $db->insert_id;
+    if ($id_student != 0) {
+        $ans["status"] = "ok";
+        $ans["answer"] = "Registro creado";
+        $ans["pass"] = $pass;
+    } else {
+        $ans["status"] = "error";
+        $ans["answer"] = "Fallo en crear trata de nuevo";
+    }
+    return  $ans;
+}
 
 if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
     include "./dbconn.php";
@@ -28,8 +91,8 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
             $query = "DELETE FROM roles WHERE id_rol = '$id'"; //pendiente
             break;
         default:
-            $ans["status"] = "error";
-            $ans["answer"] = "No tienes permiso";
+            $res["status"] = "error";
+            $res["answer"] = "No tienes permiso";
             break;
     }
 } else {
@@ -38,46 +101,3 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
 }
 
 echo json_encode($res);
-
-
-function new_class($data, $db)
-{
-    $data["id_teacher"] == "Selecciona maestro" ? $id_teacher_fk = 'NULL' : $id_teacher_fk = "'{$data["id_teacher"]}'";
-    $query = "INSERT INTO class(name_class, id_teacher_fk) values ('{$data["name_class"]}',{$id_teacher_fk})";
-    $db->query($query);
-    $id_class = $db->insert_id;
-
-    if ($id_class != 0) {
-        $ans["status"] = "ok";
-        $ans["answer"] = "registro creado";
-    } else {
-        $ans["status"] = "error";
-        $ans["answer"] = "Fallo en crear trata de nuevo";
-    }
-    return $ans;
-}
-
-
-function new_alumno($data, $db)
-{
-    $alumno = $data["data"];
-    $pass = random_str(8);
-    $pass_hash = password_hash($pass, PASSWORD_DEFAULT);
-    $rol = 3;
-    $query = "INSERT INTO users(email,pass,pass_org,id_rol_fk) VALUES ('{$alumno["email"]}','{$pass_hash}','{$pass}','{$rol}')";
-
-    $db->query($query);
-    $id_user = $db->insert_id;
-    $query = "INSERT INTO students(id_user_fk, DNI,first_name,last_name,address, birth_date) VALUES ($id_user,'{$alumno["dni"]}','{$alumno["first_name"]}','{$alumno["last_name"]}','{$alumno["address"]}','{$alumno["birth_date"]}')";
-    $db->query($query);
-    $id_student = $db->insert_id;
-    if ($id_student != 0) {
-        $ans["status"] = "ok";
-        $ans["answer"] = "registro creado";
-        $ans["answer"]["pass"] = $pass;
-    } else {
-        $ans["status"] = "error";
-        $ans["answer"] = "Fallo en crear trata de nuevo";
-    }
-    return $ans;
-}

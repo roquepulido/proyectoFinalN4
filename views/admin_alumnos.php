@@ -6,7 +6,7 @@ if (!isset($_SESSION["rol"]) or $_SESSION["rol"] != 1) {
 $titulo = "Alumno";
 include "../controllers/dbconn.php";
 
-$query = "SELECT s.*, u.email FROM students as s LEFT JOIN users AS u ON s.id_user_fk = u.id_user";
+$query = "SELECT s.*, u.email, u.id_user,u.active FROM students as s LEFT JOIN users AS u ON s.id_user_fk = u.id_user";
 
 $dataSQL =  $db->query($query);
 $alumnos = $dataSQL->fetch_all(MYSQLI_ASSOC);
@@ -59,7 +59,8 @@ include "./templates/aside.php";
                         <div class="card-header">
                             <div class="row justify-content-between">
                                 <h3 class="card-title d-flex align-items-center">Información de <?= $titulo ?>s</h3>
-                                <button id="btnNew" type="button" class="btn btn-primary">Agregar
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#modalNew">Agregar
                                     <?= $titulo ?></button>
                             </div>
                         </div>
@@ -82,6 +83,7 @@ include "./templates/aside.php";
                                 <?php
                                 $x = 1;
                                 foreach ($alumnos as $alumno) {
+                                    if ($alumno["active"] != 0) {
 
                                 ?>
                                 <tr>
@@ -93,16 +95,17 @@ include "./templates/aside.php";
                                     <td><?= $alumno["birth_date"] ?></td>
                                     <td class="text-center">
                                         <a href="#" class="text-info mx-2"
-                                            onclick="update(<?= $alumno['id_student'] ?>)"><i
+                                            onclick="showUpdate(<?= $alumno['id_student'] ?>)"><i
                                                 class="bi bi-pencil-square"></i></a>
 
                                         <a href="#" class="text-danger mx-2"
-                                            onclick="del(<?= $alumno['id_student'] ?>)"><i
+                                            onclick="delReg(<?= $alumno['id_user'] ?>)"><i
                                                 class="bi bi-trash3-fill"></i></a>
                                     </td>
                                 </tr>
                                 <?php
-                                    $x++;
+                                        $x++;
+                                    }
                                 }
                                 ?>
                             </tbody>
@@ -132,35 +135,9 @@ include "./templates/aside.php";
                         aria-hidden="true">&times;</span></button>
             </div>
             <div id="modalUpdateBody" class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="updateSubmit">Guardar cambios</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- /.modal-content -->
-</div>
-<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-<!-- /. Modal -->
-<!-- Modal New class -->
-
-<!-- Modal -->
-<div class="modal fade" id="modalNew">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Agregar <?= $titulo ?></h1>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <form id="newForm">
-                <div id="modalNewBody" class="modal-body">
+                <form id="updateForm">
+                    <input type="hidden" name="id_user">
+                    <input type="hidden" name="id_student">
                     <div class="mb-3">
                         <label for="dni" class="form-label">DNI</label>
                         <input type="text" class="form-control" name="dni" placeholder="Ingresa la matricula" required>
@@ -190,8 +167,68 @@ include "./templates/aside.php";
                             placeholder="Ingresa fecha de nacimiento" required>
                     </div>
 
-                </div>
-            </form>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="updateSubmit">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<!-- /. Modal -->
+<!-- Modal New class -->
+
+<!-- Modal -->
+<div class="modal fade" id="modalNew">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Agregar <?= $titulo ?></h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="newForm">
+                    <div class="mb-3">
+                        <label for="dni" class="form-label">DNI</label>
+                        <input type="text" class="form-control" name="dni" placeholder="Ingresa la matricula" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electronico</label>
+                        <input type="email" class="form-control" name="email" placeholder="Ingresa email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">Nombre(s)</label>
+                        <input type="text" class="form-control" name="first_name" placeholder="Ingresa nombre(s)"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Apellido(s)</label>
+                        <input type="text" class="form-control" name="last_name" placeholder="Ingresa la apellido(s)"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" name="address" placeholder="Ingresa la dirección"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="birth_date" class="form-label">Fecha de nacimiento</label>
+                        <input type="date" class="form-control" name="birth_date"
+                            placeholder="Ingresa fecha de nacimiento" required>
+                    </div>
+
+                </form>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="newSubmit">Crear</button>
@@ -229,11 +266,9 @@ include "./templates/footer.php";
 <script src="../assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- custom script -->
 <script>
-const modalUpdateBody = document.getElementById("modalUpdateBody");
 const modalUpdate = document.getElementById("modalUpdate");
-const modalNew = document.getElementById("modalNew");
-const modalNewBody = document.getElementById("modalNewBody");
-const btnNewModal = document.getElementById("btnNew");
+const updateForm = document.getElementById("updateForm");
+const newForm = document.getElementById("newForm");
 
 $("#tablaMaster").DataTable({
     "responsive": true,
@@ -242,108 +277,100 @@ $("#tablaMaster").DataTable({
     "buttons": ["copy", "excel", "pdf", "colvis"]
 }).buttons().container().appendTo('#tablaMaster_wrapper .col-md-6:eq(0)');
 
-btnNewModal.addEventListener("click", async () => {
-    // modalNewBody.innerHTML = "";
-    modalUpdateBody.innerHTML = "";
-    // const url = "../controllers/get_modal_data.php?" + "id=0&" + "tabla=alumnos";
-    // const res = await fetch(url).then(res => res.text());
+//funcion de enviar el formulario de nuevo registro
+document.getElementById("newSubmit").addEventListener("click", async () => {
+    const url = "../controllers/new_data.php"
+    formData = Object.fromEntries(new FormData(newForm).entries())
+    data = {
+        data: formData,
+        tabla: "alumnos",
 
-    // modalNewBody.innerHTML = res;
-    const myModalNew = new bootstrap.Modal(modalNew, {});
-
-    document.getElementById("newSubmit").addEventListener("click", async () => {
-        const url = "../controllers/new_data.php"
-        formData = Object.fromEntries(new FormData(document.querySelector('#newForm'))
-            .entries())
-        data = {
-            data: formData,
-            tabla: "alumnos",
-
-        };
-        const options = {
-            method: "POST",
-            body: JSON.stringify(data)
-        };
-        const res = await fetch(url, options).then(res => res.text());
+    };
+    const options = {
+        method: "POST",
+        body: JSON.stringify(data)
+    };
+    const res = await fetch(url, options).then(res => res.json());
 
 
-        // if (res.status === "ok") {
-        //     Swal.fire(
-        //         "Registrado!",
-        //         res.answer,
-        //         "success"
-        //     ).then((result) => {
-        //         if (result.isConfirmed) {
-        //             window.location.reload();
-        //         }
-        //     });
-        // } else {
-        //     Swal.fire(
-        //         "Falla!",
-        //         res.answer,
-        //         "error"
-        //     ).then((result) => {
-        //         if (result.isConfirmed) {
-        //             window.location.reload();
-        //         }
-        //     });
-        // }
-    });
-
-    myModalNew.show();
+    if (res.status === "ok") {
+        Swal.fire(
+            "Registrado!",
+            res.answer + " Guarda la siguente contraseña para acceso " + res.pass,
+            "success"
+        ).then((result) => {
+            if (result.isConfirmed) {
+                window.location.reload();
+            }
+        });
+    } else {
+        Swal.fire(
+            "Falla!",
+            res.answer,
+            "error"
+        ).then((result) => {
+            if (result.isConfirmed) {
+                window.location.reload();
+            }
+        });
+    }
 });
 
-async function update(id) {
-    modalNewBody.innerHTML = "";
-    modalUpdateBody.innerHTML = "";
-    const url = "../controllers/get_modal_data.php?id=" + id + "&" + "tabla=alumnos";
-    const res = await fetch(url).then(res => res.text());
+async function showUpdate(id) {
 
-    modalUpdateBody.innerHTML = res;
+    const url = "../controllers/get_data.php?id=" + id + "&" + "tabla=alumnos";
+    const res = await fetch(url).then(res => res.json());
     const myModal = new bootstrap.Modal(modalUpdate, {});
-    document.getElementById("updateSubmit").addEventListener("click", async () => {
-        const url = "../controllers/update.php"
-        formData = Object.fromEntries(new FormData(document.querySelector('#updateForm')).entries())
-        data = {
-            data: formData,
-            tabla: "clases",
-
-        };
-        const options = {
-            method: "POST",
-            body: JSON.stringify(data)
-        };
-        const res = await fetch(url, options).then(res => res.json());
-
-        if (res.status === "ok") {
-            Swal.fire(
-                "Actualizado!",
-                res.answer,
-                "success"
-            ).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.reload();
-                }
-            });
-        } else {
-            Swal.fire(
-                "Falla!",
-                res.answer,
-                "error"
-            ).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.reload();
-                }
-            });
-        }
-
-
-
-    })
+    const form = document.forms.updateForm;
+    form.dni.value = res.DNI;
+    form.email.value = res.email;
+    form.first_name.value = res.first_name;
+    form.last_name.value = res.last_name;
+    form.birth_date.value = res.birth_date;
+    form.address.value = res.address;
+    form.id_user.value = res.id_user_fk;
+    form.id_student.value = res.id_student;
     myModal.show();
 }
+//funcion para enviar los datos del update
+document.getElementById("updateSubmit").addEventListener("click", async () => {
+    const url = "../controllers/update.php"
+    formData = Object.fromEntries(new FormData(updateForm).entries())
+    data = {
+        data: formData,
+        tabla: "alumnos",
+    };
+    const options = {
+        method: "POST",
+        body: JSON.stringify(data)
+    };
+    const res = await fetch(url, options).then(res => res.json());
 
-function del(id) {
+
+    if (res.status === "ok") {
+        Swal.fire(
+            "Actualizado!",
+            res.answer,
+            "success"
+        ).then((result) => {
+            if (result.isConfirmed) {
+                window.location.reload();
+            }
+        });
+    } else {
+        Swal.fire(
+            "Falla!",
+            res.answer,
+            "error"
+        ).then((result) => {
+            if (result.isConfirmed) {
+                window.location.reload();
+            }
+        });
+    }
+});
+
+function delReg(id) {
     const url = "../controllers/delete.php?id=" + id + "&" + "tabla=alumnos";
     Swal.fire({
         title: "Estas Seguro?",

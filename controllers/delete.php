@@ -1,21 +1,45 @@
 <?php session_start();
 
+function del_user($id, $db)
+{
+    if ($db->query("UPDATE users SET active = 0 WHERE id_user = '$id'")) {
+        return true;
+    } else {
+        return false;
+    }
+}
+function del_clases($id, $db)
+{
+    if ($db->query("DELETE FROM classes WHERE id_class = '$id'")) {
+        return true;
+    } else {
+        return false;
+    }
+}
+function del_roles($id, $db)
+{
+    if ($db->query("DELETE FROM roles WHERE id_rol = '$id'")) {
+        return true;
+    } else {
+        return false;
+    }
+}
 if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
     include "./dbconn.php";
     $table = $_GET["tabla"];
     $id = $_GET["id"];
     switch ($table) {
         case "maestros":
-            $query = "DELETE FROM teachers WHERE id_teacher = '$id'";
+            $res = del_user($id, $db); // Se pone user por que solo se cambia el active a false y ya no se mostrata ni podra acceder
             break;
-        case "estudiantes":
-            $query = "DELETE FROM students WHERE id_student = '$id'";
+        case "alumnos":
+            $res = del_user($id, $db); // Se pone user por que solo se cambia el active a false y ya no se mostrata ni podra acceder
             break;
         case "usuarios":
-            $query = "DELETE FROM users WHERE id_user = '$id'";
+            $res = del_user($id, $db);
             break;
         case "clases":
-            $query = "DELETE FROM class WHERE id_class = '$id'";
+            $res = del_clases($id, $db);
             break;
         case "calif":
             $query = "DELETE FROM grades WHERE id_grade = '$id'";
@@ -24,22 +48,20 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
             $query = "DELETE FROM notes WHERE id_note = '$id'";
             break;
         case "roles":
-            $query = "DELETE FROM roles WHERE id_rol = '$id'";
+            $res = del_roles($id, $db);
             break;
         default:
             $ans["status"] = "error";
             $ans["answer"] = "No tienes permiso";
             break;
     }
-    if (isset($query)) {
-        $dataSQL = $db->query($query);
-        if ($dataSQL) {
-            $ans["status"] = "ok";
-            $ans["answer"] = "Se elimino con exito el registro de la tabla de $table";
-        } else {
-            $ans["status"] = "error";
-            $ans["answer"] = "Fallo en eliminar trata de nuevo";
-        }
+
+    if ($res) {
+        $ans["status"] = "ok";
+        $ans["answer"] = "Se elimino con exito el registro de la tabla de $table";
+    } else {
+        $ans["status"] = "error";
+        $ans["answer"] = "Fallo en eliminar trata de nuevo";
     }
 } else {
     $ans["status"] = "error";

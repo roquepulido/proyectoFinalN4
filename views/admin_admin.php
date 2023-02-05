@@ -1,24 +1,15 @@
 <?php session_start();
 
-function count_alumnos_class($id, $db)
-{
-    $query = "SELECT COUNT(id_class_fk) FROM student_class WHERE id_class_fk = '$id'";
-    $dataSQL = $db->query($query);
-    $count = $dataSQL->fetch_assoc();
-    return $count["COUNT(id_class_fk)"];
-}
-
-
 if (!isset($_SESSION["rol"]) or $_SESSION["rol"] != 1) {
     header("Location:./403.php");
 }
-
+$titulo = "Permiso";
 include "../controllers/dbconn.php";
 
-$query = "SELECT c.*, t.first_name, t.last_name FROM classes as c LEFT JOIN teachers AS t ON c.id_teacher_fk = t.id_teacher";
+$query = "SELECT * FROM users";
 
-$dataSQL = $db->query($query);
-$classes = $dataSQL->fetch_all(MYSQLI_ASSOC);
+$dataSQL =  $db->query($query);
+$usuarios = $dataSQL->fetch_all(MYSQLI_ASSOC);
 
 
 
@@ -46,12 +37,12 @@ include "./templates/aside.php";
 
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Lista de Clases</h1>
+                    <h1 class="m-0">Lista de <?= $titulo ?>s</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Clases</li>
+                        <li class="breadcrumb-item active"><?= $titulo ?>s</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -67,47 +58,51 @@ include "./templates/aside.php";
                     <div class="card">
                         <div class="card-header">
                             <div class="row justify-content-between">
-                                <h3 class="card-title d-flex align-items-center">Información de Clases</h3>
-                                <button id="btnNewClass" type="button" class="btn btn-primary">Agregar Clase</button>
+                                <h3 class="card-title d-flex align-items-center">Información de <?= $titulo ?>s</h3>
                             </div>
                         </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="tablaMaestro" class="table table-bordered table-striped">
+                        <table id="tablaMaster" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Clase</th>
-                                    <th>Maestro</th>
-                                    <th>Alumnos inscritos</th>
+                                    <th>Email / Usuario</th>
+                                    <th>Permiso</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                 $x = 1;
-                                foreach ($classes as $class) {
+                                foreach ($usuarios as $user) {
 
                                 ?>
                                 <tr>
                                     <td><?= $x ?></td>
-                                    <td><?= $class["name_class"] ?></td>
-                                    <td><?= !empty($class["id_teacher_fk"]) ? $class["first_name"] . " " . $class["last_name"] : '<span class="badge badge-warning">Sin asignación</span>' ?>
-                                    </td>
-                                    <td><?php
-                                            $count = count_alumnos_class($class["id_class"], $db);
-                                            echo $count == 0 ? '<span class="badge badge-warning">Sin alumnos</span>' : "$count"; ?>
+                                    <td><?= $user["email"] ?></td>
+                                    <td>
+                                        <?php
+                                            switch ($user["id_rol_fk"]) {
+                                                case "1":
+                                                    echo '<span class="badge badge-warning">Administrador</span>';
+                                                    break;
+                                                case "2":
+                                                    echo '<span class="badge badge-info">Maestro</span>';
+                                                    break;
+                                                case "3":
+                                                    echo '<span class="badge badge-secondary">Alumno</span>';
+                                                    break;
+                                                    defaul:
+                                                    echo '<span class="badge badge-danger">Sin Permiso</span>';
+                                            }
+
+                                            ?>
                                     </td>
                                     <td class="text-center">
-                                        <a href="#" class="text-info mx-2"
-                                            onclick="update(<?= $class['id_class'] ?>)"><i
+                                        <a href="#" class="text-info mx-2" onclick="update(<?= $user['id_user'] ?>)"><i
                                                 class="bi bi-pencil-square"></i></a>
-
-                                        <a href="#" class="text-danger mx-2" onclick='del(<?= $class["id_class"] ?>)'><i
-                                                class="bi bi-trash3-fill"></i></a>
-
-
                                     </td>
                                 </tr>
                                 <?php
@@ -136,7 +131,7 @@ include "./templates/aside.php";
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5">Editar Clase</h1>
+                <h1 class="modal-title fs-5">Editar <?= $titulo ?></h1>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
@@ -160,20 +155,50 @@ include "./templates/aside.php";
 <!-- Modal New class -->
 
 <!-- Modal -->
-<div class="modal fade" id="newClass">
+<div class="modal fade" id="modalNew">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5">Agregar clase</h1>
+                <h1 class="modal-title fs-5">Agregar <?= $titulo ?></h1>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-            <div id="modalNewBody" class="modal-body">
+            <form id="newForm">
+                <div id="modalNewBody" class="modal-body">
+                    <div class="mb-3">
+                        <label for="dni" class="form-label">DNI</label>
+                        <input type="text" class="form-control" name="dni" placeholder="Ingresa la matricula" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electronico</label>
+                        <input type="email" class="form-control" name="email" placeholder="Ingresa email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">Nombre(s)</label>
+                        <input type="text" class="form-control" name="first_name" placeholder="Ingresa nombre(s)"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Apellido(s)</label>
+                        <input type="text" class="form-control" name="last_name" placeholder="Ingresa la apellido(s)"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" name="address" placeholder="Ingresa la dirección"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="birth_date" class="form-label">Fecha de nacimiento</label>
+                        <input type="date" class="form-control" name="birth_date"
+                            placeholder="Ingresa fecha de nacimiento" required>
+                    </div>
 
-            </div>
+                </div>
+            </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="newSubmit">Agreagar</button>
+                <button type="button" class="btn btn-primary" id="newSubmit">Crear</button>
             </div>
         </div>
     </div>
@@ -210,61 +235,63 @@ include "./templates/footer.php";
 <script>
 const modalUpdateBody = document.getElementById("modalUpdateBody");
 const modalUpdate = document.getElementById("modalUpdate");
-const modalNew = document.getElementById("newClass");
+const modalNew = document.getElementById("modalNew");
 const modalNewBody = document.getElementById("modalNewBody");
-const btnNewModal = document.getElementById("btnNewClass");
+const btnNewModal = document.getElementById("btnNew");
 
-$("#tablaMaestro").DataTable({
+$("#tablaMaster").DataTable({
     "responsive": true,
     "lengthChange": false,
     "autoWidth": true,
     "buttons": ["copy", "excel", "pdf", "colvis"]
-}).buttons().container().appendTo('#tablaMaestro_wrapper .col-md-6:eq(0)');
+}).buttons().container().appendTo('#tablaMaster_wrapper .col-md-6:eq(0)');
 
 btnNewModal.addEventListener("click", async () => {
-    modalNewBody.innerHTML = "";
+    // modalNewBody.innerHTML = "";
     modalUpdateBody.innerHTML = "";
-    const url = "../controllers/get_modal_data.php?" + "id=0&" + "tabla=clases";
-    const res = await fetch(url).then(res => res.text());
+    // const url = "../controllers/get_modal_data.php?" + "id=0&" + "tabla=alumnos";
+    // const res = await fetch(url).then(res => res.text());
 
-    modalNewBody.innerHTML = res;
+    // modalNewBody.innerHTML = res;
     const myModalNew = new bootstrap.Modal(modalNew, {});
 
     document.getElementById("newSubmit").addEventListener("click", async () => {
         const url = "../controllers/new_data.php"
+        formData = Object.fromEntries(new FormData(document.querySelector('#newForm'))
+            .entries())
         data = {
-            name_class: document.getElementById("name_class").value,
-            id_teacher: document.getElementById("id_teacher").value,
-            tabla: "clases",
+            data: formData,
+            tabla: "alumnos",
 
         };
         const options = {
             method: "POST",
             body: JSON.stringify(data)
         };
-        const res = await fetch(url, options).then(res => res.json());
+        const res = await fetch(url, options).then(res => res.text());
 
-        if (res.status === "ok") {
-            Swal.fire(
-                "Clase creada!",
-                res.answer,
-                "success"
-            ).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.reload();
-                }
-            });
-        } else {
-            Swal.fire(
-                "Falla!",
-                res.answer,
-                "error"
-            ).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.reload();
-                }
-            });
-        }
+
+        // if (res.status === "ok") {
+        //     Swal.fire(
+        //         "Registrado!",
+        //         res.answer,
+        //         "success"
+        //     ).then((result) => {
+        //         if (result.isConfirmed) {
+        //             window.location.reload();
+        //         }
+        //     });
+        // } else {
+        //     Swal.fire(
+        //         "Falla!",
+        //         res.answer,
+        //         "error"
+        //     ).then((result) => {
+        //         if (result.isConfirmed) {
+        //             window.location.reload();
+        //         }
+        //     });
+        // }
     });
 
     myModalNew.show();
@@ -273,17 +300,16 @@ btnNewModal.addEventListener("click", async () => {
 async function update(id) {
     modalNewBody.innerHTML = "";
     modalUpdateBody.innerHTML = "";
-    const url = "../controllers/get_modal_data.php?id=" + id + "&" + "tabla=clases";
+    const url = "../controllers/get_modal_data.php?id=" + id + "&" + "tabla=alumnos";
     const res = await fetch(url).then(res => res.text());
 
     modalUpdateBody.innerHTML = res;
     const myModal = new bootstrap.Modal(modalUpdate, {});
     document.getElementById("updateSubmit").addEventListener("click", async () => {
         const url = "../controllers/update.php"
+        formData = Object.fromEntries(new FormData(document.querySelector('#updateForm')).entries())
         data = {
-            id_class: id,
-            name_class: document.getElementById("name_class").value,
-            id_teacher: document.getElementById("id_teacher").value,
+            data: formData,
             tabla: "clases",
 
         };
@@ -322,7 +348,7 @@ async function update(id) {
 }
 
 function del(id) {
-    const url = "../controllers/delete.php?id=" + id + "&" + "tabla=clases";
+    const url = "../controllers/delete.php?id=" + id + "&" + "tabla=alumnos";
     Swal.fire({
         title: "Estas Seguro?",
         text: "No podras recuperarlo una vez hecho...",

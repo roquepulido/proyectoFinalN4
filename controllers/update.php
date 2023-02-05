@@ -15,11 +15,11 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
             $query = "DELETE FROM users WHERE id_user = '$id'"; //pendiente
             break;
         case "clases":
-            if ($data["id_teacher"] == "0") {
+            if ($data["id_teacher"] == "0" or $data["id_teacher"] == "Selecciona maestro") {
 
-                $query = "UPDATE class SET  name_class = '{$data["name_class"]}', id_teacher_fk = NULL WHERE id_class = '{$data["id_class"]}';";
+                $query = "UPDATE classes SET  name_class = '{$data["name_class"]}', id_teacher_fk = NULL WHERE id_class = '{$data["id_class"]}';";
             } else {
-                $query = "UPDATE class SET  name_class = '{$data["name_class"]}', id_teacher_fk = {$data["id_teacher"]} WHERE id_class = '{$data["id_class"]}';";
+                $query = "UPDATE classes SET  name_class = '{$data["name_class"]}', id_teacher_fk = {$data["id_teacher"]} WHERE id_class = '{$data["id_class"]}';";
             }
             break;
         case "calif":

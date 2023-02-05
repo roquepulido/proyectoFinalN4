@@ -69,7 +69,7 @@ function select_all_teachers($db, $id = 0)
 function clases($id, $db)
 {
     if ($id != "0") {
-        $query = "SELECT * FROM class WHERE id_class = '$id'";
+        $query = "SELECT * FROM classes WHERE id_class = '$id'";
         $dataSQL = $db->query($query);
         $data = $dataSQL->fetch_array(MYSQLI_ASSOC);
 ?>
@@ -100,7 +100,7 @@ function clases($id, $db)
 function alumnos($id, $db)
 {
     if ($id != "0") {
-        $query = "SELECT * FROM class WHERE id_class = '$id'";
+        $query = "SELECT * FROM classes WHERE id_class = '$id'";
         $dataSQL = $db->query($query);
         $data = $dataSQL->fetch_array(MYSQLI_ASSOC);
     ?>

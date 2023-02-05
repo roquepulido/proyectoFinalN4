@@ -7,11 +7,11 @@ if (!empty($_POST)) {
     include "../controllers/dbconn.php";
     $email = $_POST["email"];
     $pass = $_POST["pass"];
-    $query = "SELECT u.id_user, u.pass, u.id_rol_fk, r.name_rol FROM users as u INNER JOIN roles as r ON u.id_rol_fk = r.id_roles WHERE email = '$email'";
+    $query = "SELECT u.id_user, u.pass, u.id_rol_fk,u.active, r.name_rol FROM users as u INNER JOIN roles as r ON u.id_rol_fk = r.id_rol WHERE email = '$email'";
     $dataSQL = $db->query($query);
     if ($dataSQL->num_rows > 0) {
         $user = $dataSQL->fetch_assoc();
-        if (password_verify($pass, $user['pass'])) {
+        if (password_verify($pass, $user['pass']) and $user["active"] == 1) {
             $_SESSION["rol"] = $user["id_rol_fk"];
             $_SESSION["id_user"] = $user["id_user"];
 
@@ -114,13 +114,13 @@ if (!empty($_POST)) {
     <!-- /.login-box -->
     <div class="pass">
         <h5>Admin</h5>
-        <p>ocrocroft0@dailymail.co.uk - P3ege6crJ</p>
+        <p>admin@admin.com - admin</p>
 
         <h5>Maestros</h5>
-        <p>ipundy2@virginia.edu - tKXLiZlkHH</p>
+        <p>maestro@maesto.com - maestro</p>
 
         <h5>Alumno</h5>
-        <p>osprowle9@eventbrite.com - fttuI4DddH0C</p>
+        <p>alumno@alumno.com - alumno</p>
 
     </div>
     <!-- jQuery -->

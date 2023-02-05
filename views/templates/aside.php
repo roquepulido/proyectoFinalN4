@@ -39,6 +39,13 @@
 
                 <li class="nav-header text-center text-uppercase"> menu Administración</li>
                 <li class="nav-item">
+                    <a href="./admin_admin.php"
+                        class="nav-link <?= $_SERVER['PHP_SELF'] == '/proyectoFinalN4/views/admin_admin.php' ? "active" : "" ?>">
+                        <i class="bi bi-person-fill-gear nav-icon"></i>
+                        <p class="ml-2">Permisos</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="./admin_maestros.php"
                         class="nav-link <?= $_SERVER['PHP_SELF'] == '/proyectoFinalN4/views/admin_maestros.php' ? "active" : "" ?>">
                         <i class="bi bi-person-workspace nav-icon"></i>
