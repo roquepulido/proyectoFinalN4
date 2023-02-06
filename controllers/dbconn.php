@@ -1,10 +1,10 @@
 <?php
 
-// $host = "php_8_mysql";
-// $pass = "pass";
+$host = "php_8_mysql";
+$pass = "pass";
 
-$host = "localhost";
-$pass = "nUkp-q[M";
+// $host = "localhost";
+// $pass = "nUkp-q[M";
 
 $user = "root";
 $database = "Uni";

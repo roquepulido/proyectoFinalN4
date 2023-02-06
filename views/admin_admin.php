@@ -140,7 +140,23 @@ include "./templates/aside.php";
                         aria-hidden="true">&times;</span></button>
             </div>
             <div id="modalUpdateBody" class="modal-body">
-
+                <form id="updateForm">
+                    <input type="hidden" name="id_user">
+                    <div class="mb-3">
+                        <label for="name_class" class="form-label">Email del Usuario</label>
+                        <input type="email" class="form-control" id="emailInput" name="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="rol_id" class="form-label">Rol del usuario</label>
+                        <select name="id_rol" class="form-control" id="rolSelect"></select>
+                    </div>
+                    <div class="mb-3">
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch3" name="active">
+                            <label class="custom-control-label" for="customSwitch3">Usuario Activo</label>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -155,59 +171,6 @@ include "./templates/aside.php";
 <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-<!-- /. Modal -->
-<!-- Modal New class -->
-
-<!-- Modal -->
-<div class="modal fade" id="modalNew">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Agregar <?= $titulo ?></h1>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <form id="newForm">
-                <div id="modalNewBody" class="modal-body">
-                    <div class="mb-3">
-                        <label for="dni" class="form-label">DNI</label>
-                        <input type="text" class="form-control" name="dni" placeholder="Ingresa la matricula" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Correo Electronico</label>
-                        <input type="email" class="form-control" name="email" placeholder="Ingresa email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="first_name" class="form-label">Nombre(s)</label>
-                        <input type="text" class="form-control" name="first_name" placeholder="Ingresa nombre(s)"
-                            required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="last_name" class="form-label">Apellido(s)</label>
-                        <input type="text" class="form-control" name="last_name" placeholder="Ingresa la apellido(s)"
-                            required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Dirección</label>
-                        <input type="text" class="form-control" name="address" placeholder="Ingresa la dirección"
-                            required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="birth_date" class="form-label">Fecha de nacimiento</label>
-                        <input type="date" class="form-control" name="birth_date"
-                            placeholder="Ingresa fecha de nacimiento" required>
-                    </div>
-
-                </div>
-            </form>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="newSubmit">Crear</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /. Modal New Class -->
 <!-- Control Sidebar -->
 <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
@@ -243,6 +206,76 @@ $("#tablaMaster").DataTable({
     "autoWidth": true,
     "buttons": ["copy", "excel", "pdf", "colvis"]
 }).buttons().container().appendTo('#tablaMaster_wrapper .col-md-6:eq(0)');
+const btnUpdateSubmit = document.getElementById("updateSubmit");
+const updateModal = document.getElementById("modalUpdate");
+const rolSelect = document.getElementById("rolSelect");
+
+
+const getRoles = async () => {
+    const url = "../controllers/get_select.php?tabla=roles"
+    const res = await fetch(url).then(res => res.json());
+    return res;
+}
+
+async function showUpdate(id) {
+    rolSelect.innerHTML = "";
+    const url = "../controllers/get_data.php?id=" + id + "&" + "tabla=usuarios";
+    const userInfo = await fetch(url).then(res => res.json());
+    getRoles().then(res => {
+        res.forEach((rol) => {
+            const opt = document.createElement('option');
+            opt.value = rol.id_rol;
+            opt.innerHTML = rol.name_rol;
+            userInfo.id_rol_fk == rol.id_rol ? opt.selected = true : opt.selected = false;
+            rolSelect.appendChild(opt);
+        });
+    });
+
+    const form = document.forms.updateForm;
+    form.id_user.value = userInfo.id_user;
+    form.email.value = userInfo.email;
+    userInfo.active == 1 ? form.active.checked = true : form.active.checked = false;
+    const myModal = new bootstrap.Modal(modalUpdate, {});
+    myModal.show();
+}
+
+btnUpdateSubmit.addEventListener("click", async () => {
+    const url = "../controllers/update.php"
+    formData = Object.fromEntries(new FormData(updateForm).entries())
+    data = {
+        data: formData,
+        tabla: "usuarios",
+    };
+    const options = {
+        method: "POST",
+        body: JSON.stringify(data)
+    };
+    const res = await fetch(url, options).then(res => res.json());
+
+
+    if (res.status === "ok") {
+        Swal.fire(
+            "Actualizado!",
+            res.answer,
+            "success"
+        ).then((result) => {
+            if (result.isConfirmed) {
+                window.location.reload();
+            }
+        });
+    } else {
+        Swal.fire(
+            "Falla!",
+            res.answer,
+            "error"
+        ).then((result) => {
+            if (result.isConfirmed) {
+                window.location.reload();
+            }
+        });
+    }
+
+});
 </script>
 <?php
 include "./templates/scripts_html_end.php";

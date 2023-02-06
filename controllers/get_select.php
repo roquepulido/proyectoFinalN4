@@ -15,6 +15,13 @@ function get_disponible_maestro($db)
     $ans = $data->fetch_all(MYSQLI_ASSOC);
     return $ans;
 }
+function get_roles($db)
+{
+    $query = "SELECT * FROM roles";
+    $data = $db->query($query);
+    $ans = $data->fetch_all(MYSQLI_ASSOC);
+    return $ans;
+}
 ///Fin de las funciones
 
 if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
@@ -40,6 +47,7 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
 
             break;
         case "roles":
+            $ans = get_roles($db);
 
             break;
         default:

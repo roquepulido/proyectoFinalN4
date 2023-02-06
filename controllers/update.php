@@ -45,6 +45,16 @@ function update_maestro($data, $db)
         return false;
     }
 }
+function update_usuario($data, $db)
+{
+    isset($data["active"]) ? $active = 1 : $active = 0;
+    $query = "UPDATE users SET email='{$data["email"]}',active='{$active}',id_rol_fk='{$data["id_rol"]}' WHERE id_user ='{$data["id_user"]}'";
+    if ($db->query($query)) {
+        return true;
+    } else {
+        return false;
+    }
+}
 // Fin de funciones --------
 if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
     include "./dbconn.php";
@@ -58,7 +68,7 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
             $res = update_alumno($data["data"], $db);
             break;
         case "usuarios":
-            $query = "DELETE FROM users WHERE id_user = '$id'"; //pendiente
+            $res = update_usuario($data["data"], $db);
             break;
         case "clases":
             $res = update_clase($data["data"], $db);

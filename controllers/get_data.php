@@ -21,6 +21,14 @@ function get_clase($id, $db)
     $data = $dataSQL->fetch_assoc();
     return $data;
 }
+function get_user($id, $db)
+{
+
+    $query = "SELECT id_user, email, id_rol_fk, active from users where id_user = '$id'";
+    $dataSQL = $db->query($query);
+    $data = $dataSQL->fetch_assoc();
+    return $data;
+}
 ///Fin de las funciones
 if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
     include "./dbconn.php";
@@ -34,7 +42,7 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
             $ans = get_alumno($id, $db);
             break;
         case "usuarios":
-            $query = "";
+            $ans = get_user($id, $db);
             break;
         case "clases":
             $ans = get_clase($id, $db);
