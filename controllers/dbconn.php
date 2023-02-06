@@ -1,7 +1,11 @@
 <?php
 
-$host = "php_8_mysql";
+// $host = "php_8_mysql";
+// $pass = "pass";
+
+$host = "localhost";
+$pass = "nUkp-q[M";
+
 $user = "root";
-$pass = "pass";
 $database = "Uni";
 $db = new mysqli($host, $user, $pass, $database);

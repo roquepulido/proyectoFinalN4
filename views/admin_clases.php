@@ -101,10 +101,11 @@ include "./templates/aside.php";
                                     </td>
                                     <td class="text-center">
                                         <a href="#" class="text-info mx-2"
-                                            onclick="update(<?= $class['id_class'] ?>)"><i
+                                            onclick="showUpdate(<?= $class['id_class'] ?>)"><i
                                                 class="bi bi-pencil-square"></i></a>
 
-                                        <a href="#" class="text-danger mx-2" onclick='del(<?= $class["id_class"] ?>)'><i
+                                        <a href="#" class="text-danger mx-2"
+                                            onclick='delReg(<?= $class["id_class"] ?>)'><i
                                                 class="bi bi-trash3-fill"></i></a>
 
 
@@ -142,6 +143,7 @@ include "./templates/aside.php";
             </div>
             <div id="modalUpdateBody" class="modal-body">
                 <form id="updateClassForm">
+                    <input type="hidden" name="id_class">
                     <div class="mb-3">
                         <label for="name_class" class="form-label">Nombre de la Materia</label>
                         <input type="text" class="form-control" name="name_class">
@@ -150,7 +152,6 @@ include "./templates/aside.php";
                     <div class="mb-3">
                         <label for="id_teacher" class="form-label">Maestro Asignado</label>
                         <select class="form-control" name="id_teacher" id="selectUpdate">
-                            <option value="0" selected>Selecciona maestro</option>
                         </select>
                     </div>
                 </form>
@@ -240,7 +241,8 @@ const btnSubmitUpdate = document.getElementById("updateSubmit");
 const btnSubmitNew = document.getElementById("newSubmit");
 const selectNew = document.getElementById("selectNew");
 const selectUpdate = document.getElementById("selectUpdate");
-
+const updateForm = document.getElementById("updateClassForm");
+const newForm = document.getElementById("newClassForm");
 
 $("#tablaMaestro").DataTable({
     "responsive": true,
@@ -256,27 +258,28 @@ const get_disponible_teacher = async () => {
 }
 // Muesta modal para clase nueva
 btnNewModal.addEventListener("click", async () => {
+    selectNew.innerHTML = "";
     const myModal = new bootstrap.Modal(modalNew, {});
-    const classSelect = get_disponible_teacher().then(res => {
+    get_disponible_teacher().then(res => {
+        const opt = document.createElement('option');
+        opt.value = 0;
+        opt.innerHTML = "Sin Asignar";
+        selectNew.appendChild(opt);
         res.forEach((materia) => {
             const opt = document.createElement('option');
             opt.value = materia.id_teacher;
             opt.innerHTML = materia.first_name + " " + materia.last_name;
             selectNew.appendChild(opt);
         });
-        const opt = document.createElement('option');
-        opt.value = 0;
-        opt.innerHTML = "Sin Asignar";
-        selectNew.appendChild(opt);
     });
     myModal.show();
 
 });
 document.getElementById("newSubmit").addEventListener("click", async () => {
     const url = "../controllers/new_data.php"
+    formData = Object.fromEntries(new FormData(newForm).entries())
     data = {
-        name_class: document.getElementById("name_class").value,
-        id_teacher: document.getElementById("id_teacher").value,
+        data: formData,
         tabla: "clases",
 
     };
@@ -286,9 +289,76 @@ document.getElementById("newSubmit").addEventListener("click", async () => {
     };
     const res = await fetch(url, options).then(res => res.json());
 
+
     if (res.status === "ok") {
         Swal.fire(
-            "Clase creada!",
+            "Registrado!",
+            res.answer,
+            "success"
+        ).then((result) => {
+            if (result.isConfirmed) {
+                window.location.reload();
+            }
+        });
+    } else {
+        Swal.fire(
+            "Falla!",
+            res.answer,
+            "error"
+        );
+    }
+});
+
+async function showUpdate(id) {
+    selectUpdate.innerHTML = "";
+    const url = "../controllers/get_data.php?id=" + id + "&" + "tabla=clases";
+    const classInfo = await fetch(url).then(res => res.json());
+
+    get_disponible_teacher().then(res => {
+
+        const optBlank = document.createElement('option');
+        optBlank.value = 0;
+        optBlank.innerHTML = "Sin Asignar";
+        selectUpdate.appendChild(optBlank);
+        res.forEach((materia) => {
+            const opt = document.createElement('option');
+            opt.value = materia.id_teacher;
+            opt.innerHTML = materia.first_name + " " + materia.last_name;
+            selectUpdate.appendChild(opt);
+        });
+        if (classInfo.id_teacher_fk != null) {
+            const optActual = document.createElement('option');
+            optActual.value = classInfo.id_teacher_fk;
+            optActual.innerHTML = classInfo.first_name + " " + classInfo.last_name;
+            optActual.selected = true;
+            selectUpdate.appendChild(optActual);
+        }
+    });
+
+    const myModal = new bootstrap.Modal(modalUpdate, {});
+    const form = document.forms.updateClassForm;
+    form.name_class.value = classInfo.name_class;
+    form.id_class.value = classInfo.id_class;
+    myModal.show();
+}
+
+document.getElementById("updateSubmit").addEventListener("click", async () => {
+    const url = "../controllers/update.php"
+    formData = Object.fromEntries(new FormData(updateForm).entries())
+    data = {
+        data: formData,
+        tabla: "clases",
+    };
+    const options = {
+        method: "POST",
+        body: JSON.stringify(data)
+    };
+    const res = await fetch(url, options).then(res => res.json());
+
+
+    if (res.status === "ok") {
+        Swal.fire(
+            "Actualizado!",
             res.answer,
             "success"
         ).then((result) => {
@@ -307,60 +377,10 @@ document.getElementById("newSubmit").addEventListener("click", async () => {
             }
         });
     }
+
 });
 
-async function update(id) {
-    modalNewBody.innerHTML = "";
-    modalUpdateBody.innerHTML = "";
-    const url = "../controllers/get_modal_data.php?id=" + id + "&" + "tabla=clases";
-    const res = await fetch(url).then(res => res.text());
-
-    modalUpdateBody.innerHTML = res;
-    const myModal = new bootstrap.Modal(modalUpdate, {});
-    document.getElementById("updateSubmit").addEventListener("click", async () => {
-        const url = "../controllers/update.php"
-        data = {
-            id_class: id,
-            name_class: document.getElementById("name_class").value,
-            id_teacher: document.getElementById("id_teacher").value,
-            tabla: "clases",
-
-        };
-        const options = {
-            method: "POST",
-            body: JSON.stringify(data)
-        };
-        const res = await fetch(url, options).then(res => res.json());
-
-        if (res.status === "ok") {
-            Swal.fire(
-                "Actualizado!",
-                res.answer,
-                "success"
-            ).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.reload();
-                }
-            });
-        } else {
-            Swal.fire(
-                "Falla!",
-                res.answer,
-                "error"
-            ).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.reload();
-                }
-            });
-        }
-
-
-
-    })
-    myModal.show();
-}
-
-function del(id) {
+function delReg(id) {
     const url = "../controllers/delete.php?id=" + id + "&" + "tabla=clases";
     Swal.fire({
         title: "Estas Seguro?",

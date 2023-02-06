@@ -4,12 +4,15 @@ include "./helpers.php";
 
 function new_class($data, $db)
 {
-    $data["id_teacher"] == "Selecciona maestro" ? $id_teacher_fk = 'NULL' : $id_teacher_fk = "'{$data["id_teacher"]}'";
-    $query = "INSERT INTO classes(name_class, id_teacher_fk) values ('{$data["name_class"]}',{$id_teacher_fk})";
-    $db->query($query);
-    $id_class = $db->insert_id;
+    /*{
+        "name_class": "123",
+        "id_teacher": "0"
+    }*/
 
-    if ($id_class != 0) {
+    $clase = $data["data"];
+    $clase["id_teacher"] == 0 ? $id_teacher_fk = 'NULL' : $id_teacher_fk = "'{$clase["id_teacher"]}'";
+    $query = "INSERT INTO classes(name_class, id_teacher_fk) values ('{$clase["name_class"]}',{$id_teacher_fk})";
+    if ($db->query($query)) {
         $ans["status"] = "ok";
         $ans["answer"] = "registro creado";
     } else {

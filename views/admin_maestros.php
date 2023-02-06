@@ -300,7 +300,7 @@ $("#tablaMaster").DataTable({
 //funcion open #newModal
 btnNewModal.addEventListener("click", async () => {
     const myModal = new bootstrap.Modal(modalNew, {});
-    const classSelect = get_disponible_class().then(res => {
+    get_disponible_class().then(res => {
         res.forEach((materia) => {
             const opt = document.createElement('option');
             opt.value = materia.id_class;
@@ -355,7 +355,7 @@ async function showUpdate(id) {
     selectUpdate.innerHTML = "";
     const url = "../controllers/get_data.php?id=" + id + "&" + "tabla=maestros";
     const teacherInfo = await fetch(url).then(res => res.json());
-    const classSelect = get_disponible_class().then((res) => {
+    get_disponible_class().then((res) => {
         const optBlank = document.createElement('option');
         optBlank.value = 0;
         optBlank.innerHTML = "Sin Asignar";

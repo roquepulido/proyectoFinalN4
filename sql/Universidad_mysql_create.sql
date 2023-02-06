@@ -16,7 +16,7 @@ CREATE TABLE `roles` (
 
 CREATE TABLE `classes` (
 	`id_class` int NOT NULL AUTO_INCREMENT,
-	`id_teacher_fk` int NOT NULL DEFAULT '0',
+	`id_teacher_fk` int,
 	`name_class` varchar(50) NOT NULL,
 	PRIMARY KEY (`id_class`)
 );

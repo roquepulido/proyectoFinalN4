@@ -14,6 +14,13 @@ function get_maestro($id, $db)
     $data = $dataSQL->fetch_array(MYSQLI_ASSOC);
     return $data;
 }
+function get_clase($id, $db)
+{
+    $query = "SELECT c.*, t.first_name, t.last_name from classes as c left join teachers as t on c.id_teacher_fk = t.id_teacher where c.id_class = '$id'";
+    $dataSQL = $db->query($query);
+    $data = $dataSQL->fetch_assoc();
+    return $data;
+}
 ///Fin de las funciones
 if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
     include "./dbconn.php";
@@ -27,19 +34,19 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
             $ans = get_alumno($id, $db);
             break;
         case "usuarios":
-            $query = "SELECT * FROM users WHERE id_user = '$id'";
+            $query = "";
             break;
         case "clases":
-
+            $ans = get_clase($id, $db);
             break;
         case "calif":
-            $query = "SELECT * FROM grades WHERE id_grade = '$id'";
+            $query = "";
             break;
         case "notas":
-            $query = "SELECT * FROM notes WHERE id_note = '$id'";
+            $query = "";
             break;
         case "roles":
-            $query = "SELECT * FROM roles WHERE id_rol = '$id'";
+            $query = "";
             break;
         default:
             $ans["status"] = "error";

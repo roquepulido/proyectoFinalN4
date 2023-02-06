@@ -12,7 +12,7 @@ function update_alumno($data, $db)
 
 function update_clase($data, $db)
 {
-    if ($data["id_teacher"] == "0" or $data["id_teacher"] == "Selecciona maestro") {
+    if ($data["id_teacher"] == "0") {
 
         $query = "UPDATE classes SET  name_class = '{$data["name_class"]}', id_teacher_fk = NULL WHERE id_class = '{$data["id_class"]}';";
     } else {
