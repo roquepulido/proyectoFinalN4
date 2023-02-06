@@ -21,7 +21,7 @@ if (!empty($_POST)) {
                     $_SESSION["user"]["rol"] = $user["name_rol"];
                     break;
                 case 2:
-                    $query = "SELECT first_name, last_name , id_class_fk FROM teachers WHERE id_user_fk = '" . $user["id_user"] . "'";
+                    $query = "SELECT * FROM teachers WHERE id_user_fk = '{$user["id_user"]}'";
                     $dataSQL = $db->query($query);
                     $_SESSION["user"] = $dataSQL->fetch_assoc();
                     $_SESSION["user"]["name"] = $_SESSION["user"]["first_name"] . " " . $_SESSION["user"]["last_name"];

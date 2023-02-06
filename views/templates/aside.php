@@ -72,7 +72,8 @@
 
                 <li class="nav-header text-center text-uppercase"> menu Maestros</li>
                 <li class="nav-item">
-                    <a href="./maestro_alumnos.php" class="nav-link ">
+                    <a href="./maestro_alumnos.php"
+                        class="nav-link <?= $_SERVER['PHP_SELF'] == '/proyectoFinalN4/views/maestro_alumnos.php' ? "active" : "" ?>">
                         <i class="bi bi-mortarboard-fill nav-icon"></i>
                         <p class="ml-2">Alumnos</p>
                     </a>
@@ -82,9 +83,15 @@
                 ?>
                 <li class="nav-header text-center text-uppercase">menu Alumnos</li>
                 <li class="nav-item">
-                    <a href="./calificaciones.php" class="nav-link">
+                    <a href="./alumno_calificaciones.php" class="nav-link">
                         <i class="bi bi-file-earmark-check nav-icon"></i>
                         <p class="ml-2">Calificaciones</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./alumno_inscribir_clase.php" class="nav-link">
+                        <i class="bi bi-easel nav-icon"></i>
+                        <p class="ml-2">Clases Suscritas</p>
                     </a>
                 </li>
                 <?php } ?>
