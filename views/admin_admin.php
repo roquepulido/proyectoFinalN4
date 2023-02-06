@@ -104,7 +104,8 @@ include "./templates/aside.php";
                                     <td><?= $user["active"] == 1 ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-danger">Inactivo</span>' ?>
                                     </td>
                                     <td class="text-center">
-                                        <a href="#" class="text-info mx-2" onclick="update(<?= $user['id_user'] ?>)"><i
+                                        <a href="#" class="text-info mx-2"
+                                            onclick="showUpdate(<?= $user['id_user'] ?>)"><i
                                                 class="bi bi-pencil-square"></i></a>
                                     </td>
                                 </tr>
@@ -236,161 +237,12 @@ include "./templates/footer.php";
 <script src="../assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- custom script -->
 <script>
-const modalUpdateBody = document.getElementById("modalUpdateBody");
-const modalUpdate = document.getElementById("modalUpdate");
-const modalNew = document.getElementById("modalNew");
-const modalNewBody = document.getElementById("modalNewBody");
-const btnNewModal = document.getElementById("btnNew");
-
 $("#tablaMaster").DataTable({
     "responsive": true,
     "lengthChange": false,
     "autoWidth": true,
     "buttons": ["copy", "excel", "pdf", "colvis"]
 }).buttons().container().appendTo('#tablaMaster_wrapper .col-md-6:eq(0)');
-
-btnNewModal.addEventListener("click", async () => {
-    // modalNewBody.innerHTML = "";
-    modalUpdateBody.innerHTML = "";
-    // const url = "../controllers/get_modal_data.php?" + "id=0&" + "tabla=alumnos";
-    // const res = await fetch(url).then(res => res.text());
-
-    // modalNewBody.innerHTML = res;
-    const myModalNew = new bootstrap.Modal(modalNew, {});
-
-    document.getElementById("newSubmit").addEventListener("click", async () => {
-        const url = "../controllers/new_data.php"
-        formData = Object.fromEntries(new FormData(document.querySelector('#newForm'))
-            .entries())
-        data = {
-            data: formData,
-            tabla: "alumnos",
-
-        };
-        const options = {
-            method: "POST",
-            body: JSON.stringify(data)
-        };
-        const res = await fetch(url, options).then(res => res.text());
-
-
-        // if (res.status === "ok") {
-        //     Swal.fire(
-        //         "Registrado!",
-        //         res.answer,
-        //         "success"
-        //     ).then((result) => {
-        //         if (result.isConfirmed) {
-        //             window.location.reload();
-        //         }
-        //     });
-        // } else {
-        //     Swal.fire(
-        //         "Falla!",
-        //         res.answer,
-        //         "error"
-        //     ).then((result) => {
-        //         if (result.isConfirmed) {
-        //             window.location.reload();
-        //         }
-        //     });
-        // }
-    });
-
-    myModalNew.show();
-});
-
-async function update(id) {
-    modalNewBody.innerHTML = "";
-    modalUpdateBody.innerHTML = "";
-    const url = "../controllers/get_modal_data.php?id=" + id + "&" + "tabla=alumnos";
-    const res = await fetch(url).then(res => res.text());
-
-    modalUpdateBody.innerHTML = res;
-    const myModal = new bootstrap.Modal(modalUpdate, {});
-    document.getElementById("updateSubmit").addEventListener("click", async () => {
-        const url = "../controllers/update.php"
-        formData = Object.fromEntries(new FormData(document.querySelector('#updateForm')).entries())
-        data = {
-            data: formData,
-            tabla: "clases",
-
-        };
-        const options = {
-            method: "POST",
-            body: JSON.stringify(data)
-        };
-        const res = await fetch(url, options).then(res => res.json());
-
-        if (res.status === "ok") {
-            Swal.fire(
-                "Actualizado!",
-                res.answer,
-                "success"
-            ).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.reload();
-                }
-            });
-        } else {
-            Swal.fire(
-                "Falla!",
-                res.answer,
-                "error"
-            ).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.reload();
-                }
-            });
-        }
-
-
-
-    })
-    myModal.show();
-}
-
-function del(id) {
-    const url = "../controllers/delete.php?id=" + id + "&" + "tabla=alumnos";
-    Swal.fire({
-        title: "Estas Seguro?",
-        text: "No podras recuperarlo una vez hecho...",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Si, borrar",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const ans = fetch(url)
-                .then((res) => res.json())
-                .then((res) => {
-                    if (res.status === "ok") {
-                        Swal.fire(
-                            "Borrado!",
-                            res.answer,
-                            "success"
-                        ).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.reload();
-                            }
-                        });
-                    } else {
-                        Swal.fire(
-                            "Falla!",
-                            res.answer,
-                            "error"
-                        ).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.reload();
-                            }
-                        });
-                    }
-                });
-        }
-    });
-
-}
 </script>
 <?php
 include "./templates/scripts_html_end.php";
