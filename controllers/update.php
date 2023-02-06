@@ -25,15 +25,34 @@ function update_clase($data, $db)
     }
 }
 
+function update_maestro($data, $db)
+{
+    if ($data["id_class"] != "0") {
+        $query = "UPDATE classes SET id_teacher_fk = '{$data["id_teacher"]}' WHERE id_class = '{$data["id_class"]}'";
+    } else {
 
-// Fin de fusiones --------
+        $query = "UPDATE classes SET id_teacher_fk = NULL WHERE id_teacher_fk = '{$data["id_teacher"]}'";
+    }
+    if (!$db->query($query)) {
+        return false;
+    }
+
+    $query = "UPDATE  teachers SET  first_name='{$data["first_name"]}',last_name='{$data["last_name"]}', address = '{$data["address"]}', birth_date = '{$data["birth_date"]}' WHERE id_teacher = {$data["id_teacher"]}";
+
+    if ($db->query($query)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+// Fin de funciones --------
 if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
     include "./dbconn.php";
     $data = json_decode(file_get_contents('php://input'), true);
     $table = $data["tabla"];
     switch ($table) {
         case "maestros":
-            $query = "DELETE FROM teachers WHERE id_teacher = '$id'"; //pendiente
+            $res = update_maestro($data["data"], $db);
             break;
         case "alumnos":
             $res = update_alumno($data["data"], $db);

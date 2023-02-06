@@ -56,8 +56,17 @@ function new_maestro($data, $db)
         return $ans;
     }
 
-    $id_student = $db->insert_id;
-    if ($id_student != 0) {
+    $id_teacher = $db->insert_id;
+    if ($maestro["id_class"] != "0") {
+        $query = "UPDATE classes SET id_teacher_fk = '$id_teacher' WHERE id_class = '{$maestro["id_class"]}'";
+        if (!$db->query($query)) {
+            $ans["status"] = "error";
+            $ans["answer"] = "Errormessage: $db->error";
+            return $ans;
+        }
+    }
+
+    if ($id_teacher != 0) {
         $ans["status"] = "ok";
         $ans["answer"] = "Registro creado";
         $ans["pass"] = $pass;

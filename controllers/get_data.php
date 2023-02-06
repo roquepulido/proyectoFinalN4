@@ -2,8 +2,14 @@
 
 function get_alumno($id, $db)
 {
-
     $query = "SELECT s.* , u.email FROM students as s LEFT JOIN users AS u ON s.id_user_fk = id_user WHERE id_student = '$id'";
+    $dataSQL = $db->query($query);
+    $data = $dataSQL->fetch_array(MYSQLI_ASSOC);
+    return $data;
+}
+function get_maestro($id, $db)
+{
+    $query = "SELECT t.* , u.email, c.* FROM teachers as t LEFT JOIN users AS u ON t.id_user_fk = u.id_user LEFT JOIN classes AS c ON t.id_teacher = c.id_teacher_fk WHERE id_teacher = '$id'";
     $dataSQL = $db->query($query);
     $data = $dataSQL->fetch_array(MYSQLI_ASSOC);
     return $data;
@@ -15,7 +21,7 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
     $id = $_GET["id"];
     switch ($table) {
         case "maestros":
-            $query = "SELECT * FROM teachers WHERE id_teacher = '$id'";
+            $ans = get_maestro($id, $db);
             break;
         case "alumnos":
             $ans = get_alumno($id, $db);

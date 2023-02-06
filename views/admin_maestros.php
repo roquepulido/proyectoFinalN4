@@ -95,16 +95,17 @@ include "./templates/aside.php";
                                     <td>
                                         <?php
                                                 $class = get_class_by_teacher($maestro["id_teacher"], $db);
-                                                echo $class == NULL ? '<span class="badge badge-warning">Sin Asignación</span>' : "$class";
+                                                echo $class == NULL ? '<span class="badge badge-warning">Sin Asignación</span>' : $class["name_class"];
                                                 ?></td>
                                     <td class="text-center">
                                         <a href="#" class="text-info mx-2"
                                             onclick="showUpdate(<?= $maestro['id_teacher'] ?>)"><i
                                                 class="bi bi-pencil-square"></i></a>
-
+                                        <?php if ($class == NULL) : ?>
                                         <a href="#" class="text-danger mx-2"
                                             onclick="delReg(<?= $maestro['id_user'] ?>)"><i
                                                 class="bi bi-trash3-fill"></i></a>
+                                        <?php endif ?>
                                     </td>
                                 </tr>
                                 <?php
@@ -144,7 +145,7 @@ include "./templates/aside.php";
                     <input type="hidden" name="id_teacher">
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electronico</label>
-                        <input type="email" class="form-control" name="email" placeholder="Ingresa email" required>
+                        <input type="email" class="form-control" name="email" placeholder="Ingresa email" disabled>
                     </div>
                     <div class="mb-3">
                         <label for="first_name" class="form-label">Nombre(s)</label>
@@ -306,6 +307,10 @@ btnNewModal.addEventListener("click", async () => {
             opt.innerHTML = materia.name_class;
             selectNew.appendChild(opt);
         });
+        const opt = document.createElement('option');
+        opt.value = 0;
+        opt.innerHTML = "Sin Asignar";
+        selectNew.appendChild(opt);
     });
     myModal.show();
 
@@ -347,26 +352,41 @@ document.getElementById("newSubmit").addEventListener("click", async () => {
 
 async function showUpdate(id) {
 
+    selectUpdate.innerHTML = "";
     const url = "../controllers/get_data.php?id=" + id + "&" + "tabla=maestros";
-    const res = await fetch(url).then(res => res.json());
-    const classSelect = get_disponible_class().then(res => {
+    const teacherInfo = await fetch(url).then(res => res.json());
+    const classSelect = get_disponible_class().then((res) => {
+        const optBlank = document.createElement('option');
+        optBlank.value = 0;
+        optBlank.innerHTML = "Sin Asignar";
+        selectUpdate.appendChild(optBlank);
         res.forEach((materia) => {
             const opt = document.createElement('option');
             opt.value = materia.id_class;
             opt.innerHTML = materia.name_class;
             selectUpdate.appendChild(opt);
+
         });
+        if (teacherInfo.id_class != null) {
+            const optActual = document.createElement('option');
+            optActual.value = teacherInfo.id_class;
+            optActual.innerHTML = teacherInfo.name_class;
+            optActual.selected = true;
+            selectUpdate.appendChild(optActual);
+        }
+
+
     });
     const myModal = new bootstrap.Modal(modalUpdate, {});
     const form = document.forms.updateForm;
-    form.dni.value = res.DNI;
-    form.email.value = res.email;
-    form.first_name.value = res.first_name;
-    form.last_name.value = res.last_name;
-    form.birth_date.value = res.birth_date;
-    form.address.value = res.address;
-    form.id_user.value = res.id_user_fk;
-    form.id_student.value = res.id_student;
+    form.email.value = teacherInfo.email;
+    form.first_name.value = teacherInfo.first_name;
+    form.last_name.value = teacherInfo.last_name;
+    form.birth_date.value = teacherInfo.birth_date;
+    form.address.value = teacherInfo.address;
+    form.id_user.value = teacherInfo.id_user_fk;
+    form.id_teacher.value = teacherInfo.id_teacher;
+
     myModal.show();
 }
 //funcion para enviar los datos del update
@@ -375,7 +395,7 @@ document.getElementById("updateSubmit").addEventListener("click", async () => {
     formData = Object.fromEntries(new FormData(updateForm).entries())
     data = {
         data: formData,
-        tabla: "alumnos",
+        tabla: "maestros",
     };
     const options = {
         method: "POST",
