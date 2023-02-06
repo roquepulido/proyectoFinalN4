@@ -64,69 +64,68 @@ include "./templates/aside.php";
                                     <?= $titulo ?></button>
                             </div>
                         </div>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table id="tablaMaster" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Nombre</th>
-                                    <th>Email</th>
-                                    <th>Dirección</th>
-                                    <th>Fec. de Nacimiento</th>
-                                    <th>Clase Asignada</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $x = 1;
-                                foreach ($maestros as $maestro) {
-                                    if ($maestro["active"] != 0) {
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="tablaMaster" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nombre</th>
+                                        <th>Email</th>
+                                        <th>Dirección</th>
+                                        <th>Fec. de Nacimiento</th>
+                                        <th>Clase Asignada</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $x = 1;
+                                    foreach ($maestros as $maestro) {
+                                        if ($maestro["active"] != 0) {
 
-                                ?>
-                                <tr>
-                                    <td><?= $x ?></td>
-                                    <td><?= $maestro["first_name"] . " " . $maestro["last_name"] ?></td>
-                                    <td><?= $maestro["email"] ?></td>
-                                    <td><?= $maestro["address"] ?></td>
-                                    <td><?= $maestro["birth_date"] ?></td>
-                                    <td>
-                                        <?php
-                                                $class = get_class_by_teacher($maestro["id_teacher"], $db);
-                                                echo $class == NULL ? '<span class="badge badge-warning">Sin Asignación</span>' : $class["name_class"];
-                                                ?></td>
-                                    <td class="text-center">
-                                        <a href="#" class="text-info mx-2"
-                                            onclick="showUpdate(<?= $maestro['id_teacher'] ?>)"><i
-                                                class="bi bi-pencil-square"></i></a>
-                                        <?php if ($class == NULL) : ?>
-                                        <a href="#" class="text-danger mx-2"
-                                            onclick="delReg(<?= $maestro['id_user'] ?>)"><i
-                                                class="bi bi-trash3-fill"></i></a>
-                                        <?php endif ?>
-                                    </td>
-                                </tr>
-                                <?php
-                                        $x++;
+                                    ?>
+                                    <tr>
+                                        <td><?= $x ?></td>
+                                        <td><?= $maestro["first_name"] . " " . $maestro["last_name"] ?></td>
+                                        <td><?= $maestro["email"] ?></td>
+                                        <td><?= $maestro["address"] ?></td>
+                                        <td><?= $maestro["birth_date"] ?></td>
+                                        <td>
+                                            <?php
+                                                    $class = get_class_by_teacher($maestro["id_teacher"], $db);
+                                                    echo $class == NULL ? '<span class="badge badge-warning">Sin Asignación</span>' : $class["name_class"];
+                                                    ?></td>
+                                        <td class="text-center">
+                                            <a href="#" class="text-info mx-2"
+                                                onclick="showUpdate(<?= $maestro['id_teacher'] ?>)"><i
+                                                    class="bi bi-pencil-square"></i></a>
+                                            <?php if ($class == NULL) : ?>
+                                            <a href="#" class="text-danger mx-2"
+                                                onclick="delReg(<?= $maestro['id_user'] ?>)"><i
+                                                    class="bi bi-trash3-fill"></i></a>
+                                            <?php endif ?>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                            $x++;
+                                        }
                                     }
-                                }
-                                ?>
-                            </tbody>
-                        </table>
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card-body -->
+                    <!-- /.card -->
                 </div>
-                <!-- /.card -->
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
-</div>
-<!-- /.container-fluid -->
-</section>
-<!-- /.content -->
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 

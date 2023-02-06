@@ -71,64 +71,63 @@ include "./templates/aside.php";
                                 <button id="btnNewClass" type="button" class="btn btn-primary">Agregar Clase</button>
                             </div>
                         </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="tablaMaestro" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Clase</th>
+                                        <th>Maestro</th>
+                                        <th>Alumnos inscritos</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $x = 1;
+                                    foreach ($classes as $class) {
+
+                                    ?>
+                                    <tr>
+                                        <td><?= $x ?></td>
+                                        <td><?= $class["name_class"] ?></td>
+                                        <td><?= !empty($class["id_teacher_fk"]) ? $class["first_name"] . " " . $class["last_name"] : '<span class="badge badge-warning">Sin asignación</span>' ?>
+                                        </td>
+                                        <td><?php
+                                                $count = count_alumnos_class($class["id_class"], $db);
+                                                echo $count == 0 ? '<span class="badge badge-warning">Sin alumnos</span>' : "$count"; ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="#" class="text-info mx-2"
+                                                onclick="showUpdate(<?= $class['id_class'] ?>)"><i
+                                                    class="bi bi-pencil-square"></i></a>
+
+                                            <a href="#" class="text-danger mx-2"
+                                                onclick='delReg(<?= $class["id_class"] ?>)'><i
+                                                    class="bi bi-trash3-fill"></i></a>
+
+
+                                        </td>
+                                    </tr>
+                                    <?php
+                                        $x++;
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table id="tablaMaestro" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Clase</th>
-                                    <th>Maestro</th>
-                                    <th>Alumnos inscritos</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $x = 1;
-                                foreach ($classes as $class) {
-
-                                ?>
-                                <tr>
-                                    <td><?= $x ?></td>
-                                    <td><?= $class["name_class"] ?></td>
-                                    <td><?= !empty($class["id_teacher_fk"]) ? $class["first_name"] . " " . $class["last_name"] : '<span class="badge badge-warning">Sin asignación</span>' ?>
-                                    </td>
-                                    <td><?php
-                                            $count = count_alumnos_class($class["id_class"], $db);
-                                            echo $count == 0 ? '<span class="badge badge-warning">Sin alumnos</span>' : "$count"; ?>
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="#" class="text-info mx-2"
-                                            onclick="showUpdate(<?= $class['id_class'] ?>)"><i
-                                                class="bi bi-pencil-square"></i></a>
-
-                                        <a href="#" class="text-danger mx-2"
-                                            onclick='delReg(<?= $class["id_class"] ?>)'><i
-                                                class="bi bi-trash3-fill"></i></a>
-
-
-                                    </td>
-                                </tr>
-                                <?php
-                                    $x++;
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.card-body -->
+                    <!-- /.card -->
                 </div>
-                <!-- /.card -->
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
-</div>
-<!-- /.container-fluid -->
-</section>
-<!-- /.content -->
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 

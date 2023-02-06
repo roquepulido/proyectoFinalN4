@@ -61,72 +61,72 @@ include "./templates/aside.php";
                                 <h3 class="card-title d-flex align-items-center">Información de <?= $titulo ?>s</h3>
                             </div>
                         </div>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table id="tablaMaster" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Email / Usuario</th>
-                                    <th>Permiso</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $x = 1;
-                                foreach ($usuarios as $user) {
 
-                                ?>
-                                <tr>
-                                    <td><?= $x ?></td>
-                                    <td><?= $user["email"] ?></td>
-                                    <td>
-                                        <?php
-                                            switch ($user["id_rol_fk"]) {
-                                                case "1":
-                                                    echo '<span class="badge badge-warning">Administrador</span>';
-                                                    break;
-                                                case "2":
-                                                    echo '<span class="badge badge-info">Maestro</span>';
-                                                    break;
-                                                case "3":
-                                                    echo '<span class="badge badge-secondary">Alumno</span>';
-                                                    break;
-                                                    defaul:
-                                                    echo '<span class="badge badge-danger">Sin Permiso</span>';
-                                            }
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="tablaMaster" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Email / Usuario</th>
+                                        <th>Permiso</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $x = 1;
+                                    foreach ($usuarios as $user) {
 
-                                            ?>
-                                    </td>
-                                    <td><?= $user["active"] == 1 ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-danger">Inactivo</span>' ?>
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="#" class="text-info mx-2"
-                                            onclick="showUpdate(<?= $user['id_user'] ?>)"><i
-                                                class="bi bi-pencil-square"></i></a>
-                                    </td>
-                                </tr>
-                                <?php
-                                    $x++;
-                                }
-                                ?>
-                            </tbody>
-                        </table>
+                                    ?>
+                                    <tr>
+                                        <td><?= $x ?></td>
+                                        <td><?= $user["email"] ?></td>
+                                        <td>
+                                            <?php
+                                                switch ($user["id_rol_fk"]) {
+                                                    case "1":
+                                                        echo '<span class="badge badge-warning">Administrador</span>';
+                                                        break;
+                                                    case "2":
+                                                        echo '<span class="badge badge-info">Maestro</span>';
+                                                        break;
+                                                    case "3":
+                                                        echo '<span class="badge badge-secondary">Alumno</span>';
+                                                        break;
+                                                        defaul:
+                                                        echo '<span class="badge badge-danger">Sin Permiso</span>';
+                                                }
+
+                                                ?>
+                                        </td>
+                                        <td><?= $user["active"] == 1 ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-danger">Inactivo</span>' ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="#" class="text-info mx-2"
+                                                onclick="showUpdate(<?= $user['id_user'] ?>)"><i
+                                                    class="bi bi-pencil-square"></i></a>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                        $x++;
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card-body -->
+                    <!-- /.card -->
                 </div>
-                <!-- /.card -->
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
-</div>
-<!-- /.container-fluid -->
-</section>
-<!-- /.content -->
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 

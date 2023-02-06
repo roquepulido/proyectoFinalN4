@@ -64,64 +64,63 @@ include "./templates/aside.php";
                                     <?= $titulo ?></button>
                             </div>
                         </div>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table id="tablaMaster" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>DNI</th>
-                                    <th>Nombre</th>
-                                    <th>Correo</th>
-                                    <th>Direccion</th>
-                                    <th>Fec. de Nacimiento</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $x = 1;
-                                foreach ($alumnos as $alumno) {
-                                    if ($alumno["active"] != 0) {
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="tablaMaster" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>DNI</th>
+                                        <th>Nombre</th>
+                                        <th>Correo</th>
+                                        <th>Direccion</th>
+                                        <th>Fec. de Nacimiento</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $x = 1;
+                                    foreach ($alumnos as $alumno) {
+                                        if ($alumno["active"] != 0) {
 
-                                ?>
-                                <tr>
-                                    <td><?= $x ?></td>
-                                    <td><?= $alumno["DNI"] ?></td>
-                                    <td><?= $alumno["first_name"] . " " . $alumno["last_name"] ?></td>
-                                    <td><?= $alumno["email"] ?></td>
-                                    <td><?= $alumno["address"] ?></td>
-                                    <td><?= $alumno["birth_date"] ?></td>
-                                    <td class="text-center">
-                                        <a href="#" class="text-info mx-2"
-                                            onclick="showUpdate(<?= $alumno['id_student'] ?>)"><i
-                                                class="bi bi-pencil-square"></i></a>
+                                    ?>
+                                    <tr>
+                                        <td><?= $x ?></td>
+                                        <td><?= $alumno["DNI"] ?></td>
+                                        <td><?= $alumno["first_name"] . " " . $alumno["last_name"] ?></td>
+                                        <td><?= $alumno["email"] ?></td>
+                                        <td><?= $alumno["address"] ?></td>
+                                        <td><?= $alumno["birth_date"] ?></td>
+                                        <td class="text-center">
+                                            <a href="#" class="text-info mx-2"
+                                                onclick="showUpdate(<?= $alumno['id_student'] ?>)"><i
+                                                    class="bi bi-pencil-square"></i></a>
 
-                                        <a href="#" class="text-danger mx-2"
-                                            onclick="delReg(<?= $alumno['id_user'] ?>)"><i
-                                                class="bi bi-trash3-fill"></i></a>
-                                    </td>
-                                </tr>
-                                <?php
-                                        $x++;
+                                            <a href="#" class="text-danger mx-2"
+                                                onclick="delReg(<?= $alumno['id_user'] ?>)"><i
+                                                    class="bi bi-trash3-fill"></i></a>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                            $x++;
+                                        }
                                     }
-                                }
-                                ?>
-                            </tbody>
-                        </table>
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card-body -->
+                    <!-- /.card -->
                 </div>
-                <!-- /.card -->
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
-</div>
-<!-- /.container-fluid -->
-</section>
-<!-- /.content -->
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 
