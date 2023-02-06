@@ -4,6 +4,7 @@ CREATE TABLE `users` (
 	`pass` varchar(100) NOT NULL,
 	`pass_org` varchar(100) NOT NULL,
 	`id_rol_fk` int NOT NULL,
+	`active` BOOLEAN NOT NULL DEFAULT true,
 	PRIMARY KEY (`id_user`)
 );
 
@@ -15,7 +16,7 @@ CREATE TABLE `roles` (
 
 CREATE TABLE `classes` (
 	`id_class` int NOT NULL AUTO_INCREMENT,
-	`id_teacher_fk` int,
+	`id_teacher_fk` int NOT NULL DEFAULT '0',
 	`name_class` varchar(50) NOT NULL,
 	PRIMARY KEY (`id_class`)
 );
