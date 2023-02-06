@@ -141,7 +141,19 @@ include "./templates/aside.php";
                         aria-hidden="true">&times;</span></button>
             </div>
             <div id="modalUpdateBody" class="modal-body">
+                <form id="updateClassForm">
+                    <div class="mb-3">
+                        <label for="name_class" class="form-label">Nombre de la Materia</label>
+                        <input type="text" class="form-control" name="name_class">
 
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_teacher" class="form-label">Maestro Asignado</label>
+                        <select class="form-control" name="id_teacher" id="selectUpdate">
+                            <option value="0" selected>Selecciona maestro</option>
+                        </select>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -169,6 +181,19 @@ include "./templates/aside.php";
                         aria-hidden="true">&times;</span></button>
             </div>
             <div id="modalNewBody" class="modal-body">
+                <form id="newClassForm">
+                    <div class="mb-3">
+                        <label for="name_class" class="form-label">Nombre de la Materia</label>
+                        <input type="text" class="form-control" id="name_class" name="name_class">
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_teacher" class="form-label">Maestros disponibles para la clase</label>
+                        <select class="form-control" id="selectNew" name="id_teacher">
+                            <option value="0" selected>Selecciona maestro</option>
+                        </select>
+                    </div>
+                </form>
 
             </div>
             <div class="modal-footer">
@@ -208,11 +233,14 @@ include "./templates/footer.php";
 <script src="../assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- custom script -->
 <script>
-const modalUpdateBody = document.getElementById("modalUpdateBody");
 const modalUpdate = document.getElementById("modalUpdate");
 const modalNew = document.getElementById("newClass");
-const modalNewBody = document.getElementById("modalNewBody");
 const btnNewModal = document.getElementById("btnNewClass");
+const btnSubmitUpdate = document.getElementById("updateSubmit");
+const btnSubmitNew = document.getElementById("newSubmit");
+const selectNew = document.getElementById("selectNew");
+const selectUpdate = document.getElementById("selectUpdate");
+
 
 $("#tablaMaestro").DataTable({
     "responsive": true,
@@ -221,53 +249,64 @@ $("#tablaMaestro").DataTable({
     "buttons": ["copy", "excel", "pdf", "colvis"]
 }).buttons().container().appendTo('#tablaMaestro_wrapper .col-md-6:eq(0)');
 
+const get_disponible_teacher = async () => {
+    const url = "../controllers/get_select.php?tabla=maestros"
+    const res = await fetch(url).then(res => res.json());
+    return res;
+}
+// Muesta modal para clase nueva
 btnNewModal.addEventListener("click", async () => {
-    modalNewBody.innerHTML = "";
-    modalUpdateBody.innerHTML = "";
-    const url = "../controllers/get_modal_data.php?" + "id=0&" + "tabla=clases";
-    const res = await fetch(url).then(res => res.text());
-
-    modalNewBody.innerHTML = res;
-    const myModalNew = new bootstrap.Modal(modalNew, {});
-
-    document.getElementById("newSubmit").addEventListener("click", async () => {
-        const url = "../controllers/new_data.php"
-        data = {
-            name_class: document.getElementById("name_class").value,
-            id_teacher: document.getElementById("id_teacher").value,
-            tabla: "clases",
-
-        };
-        const options = {
-            method: "POST",
-            body: JSON.stringify(data)
-        };
-        const res = await fetch(url, options).then(res => res.json());
-
-        if (res.status === "ok") {
-            Swal.fire(
-                "Clase creada!",
-                res.answer,
-                "success"
-            ).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.reload();
-                }
-            });
-        } else {
-            Swal.fire(
-                "Falla!",
-                res.answer,
-                "error"
-            ).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.reload();
-                }
-            });
-        }
+    const myModal = new bootstrap.Modal(modalNew, {});
+    const classSelect = get_disponible_teacher().then(res => {
+        res.forEach((materia) => {
+            const opt = document.createElement('option');
+            opt.value = materia.id_teacher;
+            opt.innerHTML = materia.first_name + " " + materia.last_name;
+            selectNew.appendChild(opt);
+        });
+        const opt = document.createElement('option');
+        opt.value = 0;
+        opt.innerHTML = "Sin Asignar";
+        selectNew.appendChild(opt);
     });
+    myModal.show();
 
-    myModalNew.show();
+});
+document.getElementById("newSubmit").addEventListener("click", async () => {
+    const url = "../controllers/new_data.php"
+    data = {
+        name_class: document.getElementById("name_class").value,
+        id_teacher: document.getElementById("id_teacher").value,
+        tabla: "clases",
+
+    };
+    const options = {
+        method: "POST",
+        body: JSON.stringify(data)
+    };
+    const res = await fetch(url, options).then(res => res.json());
+
+    if (res.status === "ok") {
+        Swal.fire(
+            "Clase creada!",
+            res.answer,
+            "success"
+        ).then((result) => {
+            if (result.isConfirmed) {
+                window.location.reload();
+            }
+        });
+    } else {
+        Swal.fire(
+            "Falla!",
+            res.answer,
+            "error"
+        ).then((result) => {
+            if (result.isConfirmed) {
+                window.location.reload();
+            }
+        });
+    }
 });
 
 async function update(id) {

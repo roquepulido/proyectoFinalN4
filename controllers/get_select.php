@@ -7,6 +7,13 @@ function get_disponible_class($db)
     $ans = $data->fetch_all(MYSQLI_ASSOC);
     return $ans;
 }
+function get_disponible_maestro($db)
+{
+    $query = "SELECT teachers.* FROM teachers LEFT JOIN users ON id_user_fk = id_user WHERE active = 1 EXCEPT SELECT teachers.* FROM teachers LEFT JOIN classes ON id_teacher = id_teacher_fk WHERE  id_teacher_fk IS NOT NULL";
+    $data = $db->query($query);
+    $ans = $data->fetch_all(MYSQLI_ASSOC);
+    return $ans;
+}
 ///Fin de las funciones
 
 if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
@@ -14,7 +21,7 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
     $table = $_GET["tabla"];
     switch ($table) {
         case "maestros":
-
+            $ans = get_disponible_maestro($db);
             break;
         case "alumnos":
 
