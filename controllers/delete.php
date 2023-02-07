@@ -24,6 +24,14 @@ function del_roles($id, $db)
         return false;
     }
 }
+function del_inscripcion($id, $db)
+{
+    if ($db->query("DELETE FROM student_class WHERE id_student_fk = '{$id["id_student"]}' AND id_class_fk = '{$id["id_class"]}'")) {
+        return true;
+    } else {
+        return false;
+    }
+}
 if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
     include "./dbconn.php";
     $table = $_GET["tabla"];
@@ -49,6 +57,32 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
             break;
         case "roles":
             $res = del_roles($id, $db);
+            break;
+        default:
+            $ans["status"] = "error";
+            $ans["answer"] = "No tienes permiso";
+            break;
+    }
+
+    if ($res) {
+        $ans["status"] = "ok";
+        $ans["answer"] = "Se elimino con exito el registro de la tabla de $table";
+    } else {
+        $ans["status"] = "error";
+        $ans["answer"] = "Fallo en eliminar trata de nuevo";
+    }
+} else {
+    $ans["status"] = "error";
+    $ans["answer"] = "No tienes permiso";
+}
+
+if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 3) {
+    include "./dbconn.php";
+    $table = $_GET["tabla"];
+    $id = $_GET;
+    switch ($table) {
+        case "inscripcion":
+            $res = del_inscripcion($id, $db);
             break;
         default:
             $ans["status"] = "error";

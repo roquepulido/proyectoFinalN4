@@ -83,15 +83,17 @@
                 ?>
                 <li class="nav-header text-center text-uppercase">menu Alumnos</li>
                 <li class="nav-item">
-                    <a href="./alumno_calificaciones.php" class="nav-link">
+                    <a href="./alumno_calificaciones.php"
+                        class="nav-link  <?= $_SERVER['PHP_SELF'] == '/proyectoFinalN4/views/alumno_calificaciones.php' ? "active" : "" ?>">
                         <i class="bi bi-file-earmark-check nav-icon"></i>
-                        <p class="ml-2">Calificaciones</p>
+                        <p class="ml-2">Ver Calificaciones</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./alumno_inscribir_clase.php" class="nav-link">
+                    <a href="./alumno_inscripciones.php"
+                        class="nav-link <?= $_SERVER['PHP_SELF'] == '/proyectoFinalN4/views/alumno_inscripciones.php' ? "active" : "" ?>">
                         <i class="bi bi-easel nav-icon"></i>
-                        <p class="ml-2">Clases Suscritas</p>
+                        <p class="ml-2">Administra tus Clases</p>
                     </a>
                 </li>
                 <?php } ?>

@@ -9,7 +9,11 @@ function get_disponible_class($db)
 }
 function get_disponible_maestro($db)
 {
-    $query = "SELECT teachers.* FROM teachers LEFT JOIN users ON id_user_fk = id_user WHERE active = 1 AND id_teacher NOT IN(SELECT id_teacher_fk from classes where id_teacher_fk is not null)";
+    $query = "SELECT teachers.* FROM teachers 
+    LEFT JOIN users ON id_user_fk = id_user 
+    WHERE active = 1 
+    AND id_teacher NOT IN
+    (SELECT id_teacher_fk from classes where id_teacher_fk is not null)";
 
     $data = $db->query($query);
     $ans = $data->fetch_all(MYSQLI_ASSOC);

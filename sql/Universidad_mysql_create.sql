@@ -84,6 +84,13 @@ INSERT INTO roles(name_rol) VALUES ('admin');
 INSERT INTO roles(name_rol) VALUES ('maestro');
 INSERT INTO roles(name_rol) VALUES ('estudiante');
 
-INSERT INTO users(email,pass,pass_org,id_rol_fk) VALUES ('admin@admin.com',' ','admin',1);
-INSERT INTO users(email,pass,pass_org,id_rol_fk) VALUES ('maestro@maestro.com',' ','maestro',2);
-INSERT INTO users(email,pass,pass_org,id_rol_fk) VALUES ('alumno@alumno.com',' ','alumno',3);
+INSERT INTO users(email,pass,pass_org,id_rol_fk) VALUES ('admin@admin',' ','admin',1);
+INSERT INTO users(email,pass,pass_org,id_rol_fk) VALUES ('maestro@maestro',' ','maestro',2);
+INSERT INTO users(email,pass,pass_org,id_rol_fk) VALUES ('alumno@alumno',' ','alumno',3);
+
+insert into classes values('1',null,'Materia 1');
+insert into classes values('2',null,'Materia 2');
+insert into classes values('3',null,'Materia 3');
+insert into classes values('4',null,'Materia 4');
+insert into classes values('5',null,'Materia 5');
+

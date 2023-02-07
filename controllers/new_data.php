@@ -4,11 +4,6 @@ include "./helpers.php";
 
 function new_class($data, $db)
 {
-    /*{
-        "name_class": "123",
-        "id_teacher": "0"
-    }*/
-
     $clase = $data["data"];
     $clase["id_teacher"] == 0 ? $id_teacher_fk = 'NULL' : $id_teacher_fk = "'{$clase["id_teacher"]}'";
     $query = "INSERT INTO classes(name_class, id_teacher_fk) values ('{$clase["name_class"]}',{$id_teacher_fk})";
@@ -128,6 +123,24 @@ function new_alumno($data, $db)
     }
     return  $ans;
 }
+
+function inscribir_clases($data, $db)
+{
+    $inscripcion = $data["data"];
+    foreach ($inscripcion["id_classes"] as $class) {
+        $query = "INSERT INTO student_class(id_student_fk,id_class_fk)
+        VALUES ('{$inscripcion["id_student"]}','$class')";
+
+        if (!$db->query($query)) {
+            $ans["status"] = "error";
+            $ans["answer"] = "Fallo en registar clase id:$class";
+            return $ans;
+        }
+    }
+    $ans["status"] = "ok";
+    $ans["answer"] = "Materia(s) inscritas";
+    return $ans;
+}
 //// FIN DE FUNCIONES 
 
 if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
@@ -142,19 +155,29 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
             $res = new_alumno($data, $db);
             break;
         case "usuarios":
-            $query = "DELETE FROM users WHERE id_user = '$id'"; //pendiente
-            break;
+
         case "clases":
             $res = new_class($data, $db);
             break;
         case "calif":
-            $query = "DELETE FROM grades WHERE id_grade = '$id'"; //pendiente
-            break;
+
         case "notas":
-            $query = "DELETE FROM notes WHERE id_note = '$id'"; //pendiente
-            break;
+
         case "roles":
-            $query = "DELETE FROM roles WHERE id_rol = '$id'"; //pendiente
+
+        case "ins":
+        default:
+            $res["status"] = "error";
+            $res["answer"] = "No tienes permiso";
+            break;
+    }
+} elseif (isset($_SESSION["rol"]) and $_SESSION["rol"] == 3) {
+    include "./dbconn.php";
+    $data = json_decode(file_get_contents('php://input'), true);
+    $table = $data["tabla"];
+    switch ($table) {
+        case "ins":
+            $res = inscribir_clases($data, $db);
             break;
         default:
             $res["status"] = "error";
