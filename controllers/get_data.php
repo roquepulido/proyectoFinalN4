@@ -29,6 +29,16 @@ function get_user($id, $db)
     $data = $dataSQL->fetch_assoc();
     return $data;
 }
+function get_msg($info, $db)
+{
+    $query = "SELECT * from notes
+    left join classes on id_class = id_class_fk 
+    where id_class_fk = '{$info["id_class"]}' 
+    AND id_student_fk = '{$info["id_student"]}'";
+    $dataSQL = $db->query($query);
+    $data = $dataSQL->fetch_all(MYSQLI_ASSOC);
+    return $data;
+}
 ///Fin de las funciones
 if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
     include "./dbconn.php";
@@ -66,4 +76,22 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
     $ans["answer"] = "No tienes permiso";
 }
 
+
+if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 3) {
+    include "./dbconn.php";
+    $table = $_GET["tabla"];
+    $info = $_GET;
+    switch ($table) {
+        case "msg":
+            $ans = get_msg($info, $db);
+            break;
+        default:
+            $ans["status"] = "error";
+            $ans["answer"] = "No existe $table en esta WEB";
+            break;
+    }
+} else {
+    $ans["status"] = "error";
+    $ans["answer"] = "No tienes permiso";
+}
 echo json_encode($ans);

@@ -32,6 +32,14 @@ function del_inscripcion($id, $db)
         return false;
     }
 }
+function read_note($id, $db)
+{
+    if ($db->query("UPDATE notes SET read_it = 1 WHERE id_note = '{$id["id"]}'")) {
+        return true;
+    } else {
+        return false;
+    }
+}
 if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
     include "./dbconn.php";
     $table = $_GET["tabla"];
@@ -48,12 +56,6 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
             break;
         case "clases":
             $res = del_clases($id, $db);
-            break;
-        case "calif":
-            $query = "DELETE FROM grades WHERE id_grade = '$id'";
-            break;
-        case "notas":
-            $query = "DELETE FROM notes WHERE id_note = '$id'";
             break;
         case "roles":
             $res = del_roles($id, $db);
@@ -84,6 +86,8 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 3) {
         case "inscripcion":
             $res = del_inscripcion($id, $db);
             break;
+        case "notas";
+            $res = read_note($id, $db);
         default:
             $ans["status"] = "error";
             $ans["answer"] = "No tienes permiso";

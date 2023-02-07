@@ -79,7 +79,7 @@
                     </a>
                 </li>
                 <?php } ?>
-                <?php if ($_SESSION['rol'] == 3) {
+                <?php if ($_SESSION['rol'] == 3) :
                 ?>
                 <li class="nav-header text-center text-uppercase">menu Alumnos</li>
                 <li class="nav-item">
@@ -96,7 +96,7 @@
                         <p class="ml-2">Administra tus Clases</p>
                     </a>
                 </li>
-                <?php } ?>
+                <?php endif ?>
 
 
 
