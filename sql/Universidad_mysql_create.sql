@@ -4,6 +4,7 @@ CREATE TABLE `users` (
 	`pass` varchar(100) NOT NULL,
 	`id_rol_fk` int NOT NULL,
 	`active` BOOLEAN NOT NULL DEFAULT true,
+	`pass_org` varchar(100),
 	PRIMARY KEY (`id_user`)
 );
 
@@ -51,7 +52,7 @@ CREATE TABLE `teachers` (
 );
 
 CREATE TABLE `student_class` (
-	`id_grade_fk` int,
+	`id_grade_fk` int DEFAULT 'null',
 	`id_class_fk` int NOT NULL,
 	`id_student_fk` int NOT NULL
 );
@@ -84,9 +85,9 @@ INSERT INTO roles(name_rol) VALUES ('admin');
 INSERT INTO roles(name_rol) VALUES ('maestro');
 INSERT INTO roles(name_rol) VALUES ('estudiante');
 
-INSERT INTO users(email,pass,pass_org,id_rol_fk) VALUES ('admin@admin',' ','admin',1);
-INSERT INTO users(email,pass,pass_org,id_rol_fk) VALUES ('maestro@maestro',' ','maestro',2);
-INSERT INTO users(email,pass,pass_org,id_rol_fk) VALUES ('alumno@alumno',' ','alumno',3);
+INSERT INTO users(email,pass_org,id_rol_fk,pass) VALUES ('admin@admin',' ','admin',1,"$2y$10$n8SR7VXuwtWgQIJYE8lt8uIS5WnEQNJa.0YjONqU/EQMq3JcvePF2");
+INSERT INTO users(email,pass_org,id_rol_fk,pass) VALUES ('maestro@maestro',' ','maestro',2,"$2y$10$FAGuvW.EjQSC5HPxxLQaRePA2w9VyfRhnVP1xDKnyCI6ZkjXGUpFS");
+INSERT INTO users(email,pass_org,id_rol_fk,pass) VALUES ('alumno@alumno',' ','alumno',3,"$2y$10$CnIFwjrBp.D7kWH7KPRhke5p7EwMAMfTXYht0S.Vyizzc9iRCp3oa");
 
 insert into classes values('1',null,'Materia 1');
 insert into classes values('2',null,'Materia 2');

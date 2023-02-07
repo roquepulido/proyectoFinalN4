@@ -112,15 +112,28 @@ if (!empty($_POST)) {
         </div>
     </div>
     <!-- /.login-box -->
-    <div class="pass">
-        <h5>Admin</h5>
-        <p>admin@admin.com - admin</p>
+    <div class="card mt-5">
+        <div class="card-header">
 
-        <h5>Maestros</h5>
-        <p>maestro@maesto.com - maestro</p>
+            <h3 class="card-title d-flex align-items-center">Información Acceso</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <h5>Admin</h5>
+            <p>user: admin@admin</p>
+            <p>pass: admin</p>
 
-        <h5>Alumno</h5>
-        <p>alumno@alumno.com - alumno</p>
+            <h5>Maestros</h5>
+            <p>user: maestro@maesto</p>
+            <p>pass: maestro</p>
+
+            <h5>Alumno</h5>
+            <p>user: alumno@alumno</p>
+            <p> pass: alumno</p>
+
+        </div>
+        <!-- /.card-body -->
+
 
     </div>
     <!-- jQuery -->
