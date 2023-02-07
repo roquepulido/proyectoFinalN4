@@ -41,10 +41,10 @@ $dataSQL =  $db->query($query);
 $clase = $dataSQL->fetch_assoc();
 if (!empty($clase)) {
     $name_class = $clase["name_class"];
+    $query = "SELECT * FROM students left join student_class on id_student = id_student_fk where id_class_fk = '{$clase["id_class"]}'";
+    $dataSQL =  $db->query($query);
+    $estudiantes = $dataSQL->fetch_all(MYSQLI_ASSOC);
 }
-$query = "SELECT * FROM students left join student_class on id_student = id_student_fk where id_class_fk = '{$clase["id_class"]}'";
-$dataSQL =  $db->query($query);
-$estudiantes = $dataSQL->fetch_all(MYSQLI_ASSOC);
 
 
 
@@ -246,6 +246,7 @@ include "./templates/footer.php";
 <script src="../assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- custom script -->
 <script>
+<?php if (!empty($clase)) : ?>
 $("#tablaMaster").DataTable({
     "responsive": true,
     "lengthChange": false,
@@ -402,6 +403,7 @@ function addMsg(idStudent) {
         }
     })
 }
+<?php endif ?>
 </script>
 
 <?php

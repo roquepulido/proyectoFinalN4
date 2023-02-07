@@ -52,9 +52,11 @@ CREATE TABLE `teachers` (
 );
 
 CREATE TABLE `student_class` (
+	`id_student_class` int NOT NULL AUTO_INCREMENT,
 	`id_grade_fk` int DEFAULT NULL,
 	`id_class_fk` int NOT NULL,
-	`id_student_fk` int NOT NULL
+	`id_student_fk` int NOT NULL,
+	PRIMARY KEY (`id_student_class`)
 );
 
 CREATE TABLE `grades` (
@@ -129,7 +131,7 @@ insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, bi
 insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (5, 8, 'Conroy', 'Ricoald', '5516 Bartelt Trail', '2/18/1991');
 insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (6, 9, 'Nowell', 'Blasoni', '60 Raven Center', '3/28/1992');
 insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (7, 10, 'Loria', 'McAw', '535 Glacier Hill Way', '3/1/1993');
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (8, 2, 'Loria', 'McAw', '535 Glacier Hill Way', '3/1/1993');
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (8, 2, 'Loria', 'McAw DEMO', '535 Glacier Hill Way', '3/1/1993');
 
 -- estudiantes
 
@@ -145,4 +147,4 @@ insert into students (id_student, id_user_fk, first_name, last_name, address, bi
 insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (10, 20, 'Steward', 'Onraet', '662 Butterfield Point', '10/15/2013', '6495930216');
 insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (11, 21, 'Cassy', 'Usmar', '27483 Orin Center', '12/13/2016', '1683850521');
 insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (12, 22, 'Saunderson', 'Brecon', '66 Hintze Parkway', '3/4/2017', '5768874968');
-insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (13, 3, 'Saunderson', 'Brecon', '66 Hintze Parkway', '3/4/2017', '5768874968');
+insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (13, 3, 'Saunderson', 'Brecon DEMO', '66 Hintze Parkway', '3/4/2017', '5768874968');

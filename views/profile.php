@@ -134,15 +134,6 @@ include "./templates/aside.php";
     </section>
     <!-- /.content -->
 
-    <?php
-    echo "------profil------------";
-    var_dump($profile_data);
-    echo "----------------userdatateble";
-    var_dump($user_data_table);
-    echo "----------------userdata";
-    var_dump($user_data) ?>
-
-
 </div>
 <!-- /.content-wrapper -->
 

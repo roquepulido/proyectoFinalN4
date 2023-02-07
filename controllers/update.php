@@ -57,22 +57,30 @@ function update_usuario($data, $db)
 }
 function add_grade($grade_info, $db)
 {
+    /*
+    {
+  "id_student": 13,
+  "id_class": 1,
+  "grade": "100"
+}
+*/
+    $grade = (int)$grade_info["grade"];
     $query = "SELECT id_grade_fk from student_class 
     where id_student_fk = '{$grade_info["id_student"]}' 
     AND id_class_fk = '{$grade_info["id_class"]}'";
     $sqlData = $db->query($query);
     $id_grade = $sqlData->fetch_assoc();
-    $id_grade = $id_grade["id_grade_fk"];
-    $grade = (int)$grade_info["grade"];
-    if ($id_grade == null) {
+
+    if ($id_grade["id_grade_fk"] == null) {
         $query = "INSERT INTO grades(value) VALUES ('{$grade}')";
         $db->query($query);
         $id_grade = $db->insert_id;
-        $query = "UPDATE student_class SET id_grade_fk ='$grade' 
+        $query = "UPDATE student_class SET id_grade_fk ='$id_grade' 
         WHERE id_student_fk = '{$grade_info["id_student"]}'
         AND id_class_fk = '{$grade_info["id_class"]}'";
     } else {
-        $query = "UPDATE grades SET value = '{$grade_info["grade"]}'
+        $id_grade = $id_grade["id_grade_fk"];
+        $query = "UPDATE grades SET value = '$grade'
         WHERE id_grade ='{$id_grade}'";
     }
 
