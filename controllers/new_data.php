@@ -141,6 +141,20 @@ function inscribir_clases($data, $db)
     $ans["answer"] = "Materia(s) inscritas";
     return $ans;
 }
+function ingresar_mensaje($data, $db)
+{
+    $msg_data = $data["data"];
+    $query = "INSERT INTO notes(id_student_fk,id_class_fk,text) values ('{$msg_data["id_student"]}','{$msg_data["id_class"]}','{$msg_data["text"]}')";
+    if (!$db->query($query)) {
+        $ans["status"] = "error";
+        $ans["answer"] = "Fallo en registar mensaje";
+        return $ans;
+    }
+    $ans["status"] = "ok";
+    $ans["answer"] = "Mensaje registrado";
+    return $ans;
+}
+
 //// FIN DE FUNCIONES 
 
 if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
@@ -171,13 +185,16 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
             $res["answer"] = "No tienes permiso";
             break;
     }
-} elseif (isset($_SESSION["rol"]) and $_SESSION["rol"] == 3) {
+} elseif (isset($_SESSION["rol"]) and ($_SESSION["rol"] == 3 or $_SESSION["rol"] == 2)) {
     include "./dbconn.php";
     $data = json_decode(file_get_contents('php://input'), true);
     $table = $data["tabla"];
     switch ($table) {
         case "ins":
             $res = inscribir_clases($data, $db);
+            break;
+        case "msg";
+            $res = ingresar_mensaje($data, $db);
             break;
         default:
             $res["status"] = "error";

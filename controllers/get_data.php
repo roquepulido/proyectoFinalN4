@@ -77,7 +77,7 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
 }
 
 
-if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 3) {
+if (isset($_SESSION["rol"]) and ($_SESSION["rol"] == 3 or $_SESSION["rol"] == 2)) {
     include "./dbconn.php";
     $table = $_GET["tabla"];
     $info = $_GET;

@@ -4,6 +4,34 @@ if (!isset($_SESSION["rol"]) or $_SESSION["rol"] != 2) {
     header("Location:./403.php");
 }
 $teacher = $_SESSION["user"];
+
+function get_grade_alumno($estudiante, $clase, $db)
+{
+    $query = "SELECT value from students 
+    left join student_class on id_student = id_student_fk
+    left join grades on id_grade = id_grade_fk
+    where id_student = '$estudiante' and id_class_fk = '$clase'";
+    $dataSQL =  $db->query($query);
+    $grade = $dataSQL->fetch_assoc();
+    return $grade["value"];
+}
+function get_msg_count_alumno($estudiante, $clase, $db)
+{
+    $query = "SELECT count(*) as c from notes
+    where id_student_fk = '$estudiante' and id_class_fk = '$clase'";
+    $dataSQL =  $db->query($query);
+    $count = $dataSQL->fetch_assoc();
+    return $count["c"];
+}
+function get_msg_new_count_alumno($estudiante, $clase, $db)
+{
+    $query = "SELECT count(*) as c from notes
+    where id_student_fk = '$estudiante' and id_class_fk = '$clase'
+    and read_it = 0";
+    $dataSQL =  $db->query($query);
+    $count = $dataSQL->fetch_assoc();
+    return $count["c"];
+}
 /*
 /var/www/src/proyectoFinalN4/views/maestro_alumnos.php:37:
 array (size=3)
@@ -31,7 +59,7 @@ if (!empty($clase)) {
 }
 $query = "SELECT * FROM students left join student_class on id_student = id_student_fk where id_class_fk = '{$clase["id_class"]}'";
 $dataSQL =  $db->query($query);
-$estudiantes = $dataSQL->fetch_assoc();
+$estudiantes = $dataSQL->fetch_all(MYSQLI_ASSOC);
 
 
 
@@ -110,30 +138,49 @@ include "./templates/aside.php";
                                     <?php
 
                                             $x = 1;
-                                            foreach ($estudiantes as $estudiante) {
+                                            foreach ($estudiantes as $estudiante) :
 
                                             ?>
                                     <tr>
                                         <td><?= $x ?></td>
                                         <td><?= $estudiante["first_name"] . " " . $estudiante["last_name"] ?></td>
                                         <td>
+                                            <?php
+                                                        $calificaciones = get_grade_alumno($estudiante["id_student"], $clase["id_class"], $db);
+                                                        echo $calificaciones;
+                                                        ?>
 
                                         </td>
                                         <td>
+                                            <?php
+                                                        $count = get_msg_count_alumno($estudiante["id_student"], $clase["id_class"], $db);
+                                                        $new_msg = get_msg_new_count_alumno($estudiante["id_student"], $clase["id_class"], $db);
+                                                        if ($count > 0) : ?>
+
+                                            <button class="btn"
+                                                onclick="showMGS(<?= $clase['id_class'] ?>,<?= $estudiante['id_student'] ?>,'<?= $clase['name_class'] ?>','<?= $estudiante['first_name'] . ' ' . $estudiante['last_name'] ?>')">
+                                                <i class="bi bi-chat-square-dots h4"></i>
+                                                <span style="vertical-align:top;"
+                                                    class="badge badge-warning"><?= $new_msg ?></span>
+                                            </button>
+                                            <?php else : ?>
+                                            <span class="badge badge-info">No hay mensajes</span>
+                                            <?php endif ?>
+
 
                                         </td>
                                         <td class="text-center">
-                                            <a href="#" class="text-info mx-2"
+                                            <a href="#" class="mx-2"
                                                 onclick="changeGrade(<?= $estudiante['id_student'] ?>)"><i
-                                                    class="bi bi-clipboard2-plus"></i></a>
-                                            <a href="#" class="text-info mx-2"
+                                                    class="bi bi-clipboard2-plus h4"></i></a>
+                                            <a href="#" class="mx-2"
                                                 onclick="addMsg(<?= $estudiante['id_student'] ?>)"><i
-                                                    class="bi bi-chat-dots"></i></a>
+                                                    class="bi bi-send-plus h4"></i></a>
                                         </td>
                                     </tr>
                                     <?php
                                                 $x++;
-                                            }
+                                            endforeach;
 
                                             ?>
                                 </tbody>
@@ -156,36 +203,27 @@ include "./templates/aside.php";
 <!-- /.content-wrapper -->
 
 <!-- Modal -->
-<div class="modal fade" id="modalUpdate">
+<div class="modal fade" id="modalMsg">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5">Editar</h1>
+                <h1 class="modal-title fs-5">Mensajes</h1>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-            <div id="modalUpdateBody" class="modal-body">
-                <form id="updateForm">
-                    <input type="hidden" name="id_user">
-                    <div class="mb-3">
-                        <label for="name_class" class="form-label">Email del Usuario</label>
-                        <input type="email" class="form-control" id="emailInput" name="email">
-                    </div>
-                    <div class="mb-3">
-                        <label for="rol_id" class="form-label">Rol del usuario</label>
-                        <select name="id_rol" class="form-control" id="rolSelect"></select>
-                    </div>
-                    <div class="mb-3">
-                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch3" name="active">
-                            <label class="custom-control-label" for="customSwitch3">Usuario Activo</label>
+            <div id="modalMsgBody" class="modal-body">
+                <h4 class="text-center" id="modalClass"></h4>
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div id="msgContainer">
                         </div>
+
+
+
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="updateSubmit">Guardar cambios</button>
+                    <!-- /.card-body -->
+                </div>
+
             </div>
         </div>
     </div>
@@ -231,6 +269,156 @@ $("#tablaMaster").DataTable({
     "autoWidth": true,
     "buttons": ["copy", "excel", "pdf", "colvis"]
 }).buttons().container().appendTo('#tablaMaster_wrapper .col-md-6:eq(0)');
+const msgBox = document.getElementById("msgInfo");
+
+
+async function showMGS(idClass, idStudent, nameClass, nameStudent) {
+    document.getElementById("msgContainer").innerHTML = "";
+
+    const url = "../controllers/get_data.php?id_student=" + idStudent + "&" + "tabla=msg" + "&id_class=" + idClass;
+    const msgInfo = await fetch(url).then(res => res.json());
+
+    document.getElementById("modalClass").innerText = nameClass + "  -  " + nameStudent;
+    msgInfo.forEach((msg, i) => {
+        const msgText = document.createElement('div');
+        msgText.innerHTML = `<div $id="msg${i}" class="card card-outline card-primary">
+        <div class="card-header d-flex align-items-center justify-content-between">
+        <h3 class="card-title">Mensaje ${i+1} </h3>
+        ${msg.read_it == 1? `<span class="badge badge-secondary">Mensaje leido</span>`:""}
+        <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+        <i class="fas fa-minus"></i>
+        </button>
+        </div>
+        </div>
+        <div class="card-body" style="display: block;">
+        ${msg.text}        
+        </div>        
+        </div>`;
+        document.getElementById("msgContainer").appendChild(msgText);
+    });
+
+    const myModal = new bootstrap.Modal(document.getElementById("modalMsg"), {});
+
+    myModal.show();
+
+}
+
+function changeGrade(idStudent) {
+    const url = "../controllers/update.php";
+    Swal.fire({
+        title: 'Ingresa Calificacion (0-100)',
+        input: 'number',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Enviar',
+        showLoaderOnConfirm: true,
+        preConfirm: (gradeInput) => {
+            data = {
+                data: {
+                    id_student: idStudent,
+                    id_class: <?= $clase["id_class"] ?>,
+                    grade: gradeInput,
+                },
+                tabla: "grade",
+
+            };
+            const options = {
+                method: "POST",
+                body: JSON.stringify(data)
+            };
+
+            return fetch(url, options)
+                .then(response => {
+                    return response.json()
+                })
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((res) => {
+
+        if (res.isConfirmed) {
+            Swal.fire(
+                "Calificacion Enviado!",
+                "Se registro la calificacion con exito",
+                "success"
+            ).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.reload();
+                }
+            });
+        } else {
+            Swal.fire(
+                "Falla!",
+                res.value.answer,
+                "error"
+            ).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.reload();
+                }
+            });
+        }
+    })
+}
+
+function addMsg(idStudent) {
+    const url = "../controllers/new_data.php";
+    Swal.fire({
+        title: 'Ingresa el mensaje nuevo',
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Enviar',
+        showLoaderOnConfirm: true,
+        preConfirm: (textoMsg) => {
+            data = {
+                data: {
+                    id_student: idStudent,
+                    id_class: <?= $clase["id_class"] ?>,
+                    text: textoMsg,
+                },
+                tabla: "msg",
+
+            };
+            const options = {
+                method: "POST",
+                body: JSON.stringify(data)
+            };
+
+            return fetch(url, options)
+                .then(response => {
+                    return response.json()
+                })
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((res) => {
+
+        if (res.isConfirmed) {
+            Swal.fire(
+                "Mensaje Enviado!",
+                "Se registro mesaje con exito",
+                "success"
+            ).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.reload();
+                }
+            });
+        } else {
+            Swal.fire(
+                "Falla!",
+                res.value.answer,
+                "error"
+            ).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.reload();
+                }
+            });
+        }
+    })
+}
 </script>
 
 <?php
