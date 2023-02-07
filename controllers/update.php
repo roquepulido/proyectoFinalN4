@@ -85,53 +85,86 @@ function add_grade($grade_info, $db)
     $ans["answer"] = "Calificacion registrada";
     return $ans;
 }
+function update_profile($data, $db)
+{
+    if ($data["email"] == "") {
+        $ans["status"] = "error";
+        $ans["answer"] = "Tienes que ingresar Correo";
+        return $ans;
+    }
+    if ($data["email"] != $data["actual_email"]) {
+        $query = "SELECT COUNT(*) FROM users WHERE email = '{$data['email']}'";
+        $count = $db->query($query);
+        $emailrepetido = $count->fetch_assoc();
+        if ($emailrepetido["COUNT(*)"] != 0) {
+            $ans["status"] = "error";
+            $ans["answer"] = "Correo ya registrado";
+            return $ans;
+        }
+    }
+    if (isset($data["id_teacher"])) {
+        $id = $data["id_teacher"];
+        $table = "teacher";
+    } else {
+        $id = $data["id_student"];
+        $table = "student";
+    }
+
+    if ($data["pass"] != "") {
+        $hass_pass = password_hash($data["pass"], PASSWORD_DEFAULT);
+        $query = "UPDATE users SET email = '{$data["email"]}', pass='$hass_pass' WHERE id_user = '{$data["id_user"]}'";
+    } else {
+        $query = "UPDATE users SET email = '{$data["email"]}' WHERE id_user = '{$data["id_user"]}'";
+    }
+
+    if (!$db->query($query)) {
+        $ans["status"] = "error";
+        $ans["answer"] = "Errormessage: $db->error";
+        return $ans;
+    }
+    $query = "UPDATE {$table}s 
+        SET first_name = '{$data["first_name"]}', last_name = '{$data["last_name"]}', address = '{$data["address"]}', birth_date = '{$data["birth_date"]}'
+        WHERE id_{$table} = '$id'";
+    if (!$db->query($query)) {
+        $ans["status"] = "error";
+        $ans["answer"] = "Errormessage: $db->error";
+        return $ans;
+    }
+    return true;
+}
 // Fin de funciones --------
-if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
+if (isset($_SESSION["rol"])) {
     include "./dbconn.php";
     $data = json_decode(file_get_contents('php://input'), true);
     $table = $data["tabla"];
     switch ($table) {
         case "maestros":
-            $res = update_maestro($data["data"], $db);
+            $_SESSION["rol"] == 1 ?
+                $res = update_maestro($data["data"], $db) :
+                $res = false;
             break;
         case "alumnos":
-            $res = update_alumno($data["data"], $db);
+            $_SESSION["rol"] == 1 ?
+                $res = update_alumno($data["data"], $db) :
+                $res = false;
             break;
         case "usuarios":
-            $res = update_usuario($data["data"], $db);
+            $_SESSION["rol"] == 1 ?
+                $res = update_usuario($data["data"], $db) :
+                $res = false;
             break;
         case "clases":
-            $res = update_clase($data["data"], $db);
+            $_SESSION["rol"] == 1 ?
+                $res = update_clase($data["data"], $db) :
+                $res = false;
             break;
-        case "calif":
-            $query = "DELETE FROM grades WHERE id_grade = '$id'"; //pendiente
-            break;
-        case "notas":
-            $query = "DELETE FROM notes WHERE id_note = '$id'"; //pendiente
-            break;
-        case "roles":
-            $query = "DELETE FROM roles WHERE id_rol = '$id'"; //pendiente
-            break;
-        default:
-            $ans["status"] = "error";
-            $ans["answer"] = "No tienes permiso";
-            break;
-    }
-
-    if ($res) {
-        $ans["status"] = "ok";
-        $ans["answer"] = "Se actualizo con exito el registro de la tabla de $table";
-    } else {
-        $ans["status"] = "error";
-        $ans["answer"] = "Fallo en actualizar trata de nuevo";
-    }
-} elseif (isset($_SESSION["rol"]) and $_SESSION["rol"] == 2) {
-    include "./dbconn.php";
-    $data = json_decode(file_get_contents('php://input'), true);
-    $table = $data["tabla"];
-    switch ($table) {
         case "grade":
-            $res = add_grade($data["data"], $db);
+            $_SESSION["rol"] == 2 ?
+                $res = add_grade($data["data"], $db) :
+                $res = false;
+            break;
+        case "profile":
+            $res = update_profile($data["data"], $db);
             break;
 
         default:
@@ -140,7 +173,9 @@ if (isset($_SESSION["rol"]) and $_SESSION["rol"] == 1) {
             break;
     }
 
-    if ($res) {
+    if (isset($res["status"])) {
+        $ans = $res;
+    } elseif ($res) {
         $ans["status"] = "ok";
         $ans["answer"] = "Se actualizo con exito el registro de la tabla de $table";
     } else {

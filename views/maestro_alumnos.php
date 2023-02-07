@@ -32,21 +32,6 @@ function get_msg_new_count_alumno($estudiante, $clase, $db)
     $count = $dataSQL->fetch_assoc();
     return $count["c"];
 }
-/*
-/var/www/src/proyectoFinalN4/views/maestro_alumnos.php:37:
-array (size=3)
-  'rol' => string '2' (length=1)
-  'id_user' => string '2' (length=1)
-  'user' => 
-    array (size=8)
-      'id_teacher' => string '8' (length=1)
-      'id_user_fk' => string '2' (length=1)
-      'first_name' => string 'Maestro' (length=7)
-      'last_name' => string 'Maestro' (length=7)
-      'address' => string '' (length=0)
-      'birth_date' => string ' ' (length=1)
-      'name' => string 'Maestro Maestro' (length=15)
-      'rol' => string 'Maestro' (length=7)*/
 
 include "../controllers/dbconn.php";
 
@@ -81,8 +66,6 @@ include "./templates/aside.php";
 ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper" style="max-height: 80vh;">
-    <?= var_dump($clase);
-    var_dump($estudiantes) ?>
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">

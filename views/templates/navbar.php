@@ -20,7 +20,7 @@
                 <?= $_SESSION["user"]["name"] ?><i class="bi bi-chevron-down ml-2"></i></i>
             </a>
             <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
-                <a href="#" class="dropdown-item">
+                <a href="./profile.php" class="dropdown-item">
                     <i class="bi bi-person-circle mr-2"></i> Perfil
                 </a>
                 <div class="dropdown-divider"></div>
