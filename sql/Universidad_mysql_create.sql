@@ -124,27 +124,27 @@ insert into classes values('7',null,'Ciencias de la Tierra');
 
 -- Teachers
 
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (1, 4, 'Kerwin', 'Cuerdall', '70115 Maywood Center', '2/12/1987');
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (2, 5, 'Xerxes', 'Trafford', '55259 Sycamore Place', '2/3/1995');
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (3, 6, 'Sly', 'Enderle', '5 Longview Place', '9/20/1988');
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (4, 7, 'Cy', 'Champness', '98248 Esch Court', '2/7/1987');
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (5, 8, 'Conroy', 'Ricoald', '5516 Bartelt Trail', '2/18/1991');
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (6, 9, 'Nowell', 'Blasoni', '60 Raven Center', '3/28/1992');
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (7, 10, 'Loria', 'McAw', '535 Glacier Hill Way', '3/1/1993');
-insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (8, 2, 'Loria', 'McAw DEMO', '535 Glacier Hill Way', '3/1/1993');
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (1, 4, 'Kerwin', 'Cuerdall', '70115 Maywood Center', '1987-12-02');
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (2, 5, 'Xerxes', 'Trafford', '55259 Sycamore Place', '1995-03-02');
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (3, 6, 'Sly', 'Enderle', '5 Longview Place', '1988-09-20');
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (4, 7, 'Cy', 'Champness', '98248 Esch Court', '1987-02-07');
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (5, 8, 'Conroy', 'Ricoald', '5516 Bartelt Trail', '1991-02-18');
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (6, 9, 'Nowell', 'Blasoni', '60 Raven Center', '1992-03-28');
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (7, 10, 'Loria', 'McAw', '535 Glacier Hill Way', '1993-03-01');
+insert into teachers (id_teacher, id_user_fk, first_name, last_name, address, birth_date) values (8, 2, 'Loria', 'McAw DEMO', '535 Glacier Hill Way', '1993-03-01');
 
 -- estudiantes
 
-insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (1, 11, 'Bryon', 'McGookin', '55 Hovde Drive', '12/2/2003', '7422671157');
-insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (2, 12, 'Eddi', 'Jursch', '50896 Morning Pass', '10/27/2018', '6598222028');
-insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (3, 13, 'Aurthur', 'Deeth', '2288 Granby Street', '9/23/2009', '5945491241');
-insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (4, 14, 'Rex', 'Dragge', '99 Kensington Parkway', '5/27/2014', '1871813719');
-insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (5, 15, 'Colin', 'Floodgate', '901 Autumn Leaf Circle', '2/26/2015', '7621099038');
-insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (6, 16, 'Emily', 'Chapellow', '481 Bellgrove Lane', '12/4/2005', '1331236509');
-insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (7, 17, 'Blinni', 'MacCole', '103 Bartelt Drive', '4/12/2018', '6940893490');
-insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (8, 18, 'Tanney', 'Kenan', '01 Esch Way', '12/17/2003', '2328831540');
-insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (9, 19, 'Madlin', 'Crips', '38 Delladonna Crossing', '3/13/2005', '6389277431');
-insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (10, 20, 'Steward', 'Onraet', '662 Butterfield Point', '10/15/2013', '6495930216');
-insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (11, 21, 'Cassy', 'Usmar', '27483 Orin Center', '12/13/2016', '1683850521');
-insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (12, 22, 'Saunderson', 'Brecon', '66 Hintze Parkway', '3/4/2017', '5768874968');
-insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (13, 3, 'Saunderson', 'Brecon DEMO', '66 Hintze Parkway', '3/4/2017', '5768874968');
+insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (1, 11, 'Bryon', 'McGookin', '55 Hovde Drive', '2003-12-02', '7422671157');
+insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (2, 12, 'Eddi', 'Jursch', '50896 Morning Pass', '2018-10-27', '6598222028');
+insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (3, 13, 'Aurthur', 'Deeth', '2288 Granby Street', '2009-09-23', '5945491241');
+insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (4, 14, 'Rex', 'Dragge', '99 Kensington Parkway', '2014-05-27', '1871813719');
+insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (5, 15, 'Colin', 'Floodgate', '901 Autumn Leaf Circle', '2015-02-26', '7621099038');
+insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (6, 16, 'Emily', 'Chapellow', '481 Bellgrove Lane', '2005-12-04', '1331236509');
+insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (7, 17, 'Blinni', 'MacCole', '103 Bartelt Drive', '2018-04-12', '6940893490');
+insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (8, 18, 'Tanney', 'Kenan', '01 Esch Way', '2003-12-17', '2328831540');
+insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (9, 19, 'Madlin', 'Crips', '38 Delladonna Crossing', '2005-03-13', '6389277431');
+insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (10, 20, 'Steward', 'Onraet', '662 Butterfield Point', '2013-10-15', '6495930216');
+insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (11, 21, 'Cassy', 'Usmar', '27483 Orin Center', '2016-12-13', '1683850521');
+insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (12, 22, 'Saunderson', 'Brecon', '66 Hintze Parkway', '2017-03-04', '5768874968');
+insert into students (id_student, id_user_fk, first_name, last_name, address, birth_date, DNI) values (13, 3, 'Saunderson', 'Brecon DEMO', '66 Hintze Parkway', '2017-03-04', '5768874968');
